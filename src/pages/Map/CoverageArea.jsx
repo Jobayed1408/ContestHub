@@ -23,7 +23,7 @@ const CoverageArea = () => {
     }
 
     return (
-        <div className=' h-[400px] w-3/4 mx-auto'>
+        <div className='  w-3/4 mx-auto'>
 
             <h2 className='text-3xl'>We are available in 64 areas</h2>
             <form onSubmit={handleSearch}>
@@ -47,7 +47,7 @@ const CoverageArea = () => {
             center={position} 
             zoom={7} 
             scrollWheelZoom={false} 
-            className='h-[800px]'
+            className='h-[400px]'
             ref={mapRef} 
             >
                 <TileLayer

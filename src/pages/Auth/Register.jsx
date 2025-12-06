@@ -1,137 +1,173 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
+import { Link, useLocation, useNavigate } from 'react-router';
+import useAxios from '../../hooks/useAxios';
+import SocialLogin from './SocialLogin ';
 
 const Register = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { registerUser, userProfileUpdate } = useAuth();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const axiosSecure = useAxios();
 
-    const IMG_API_KEY = import.meta.env.VITE_image_url;
-    const IMG_UPLOAD_URL = `https://api.imgbb.com/1/upload?key=${IMG_API_KEY}`;
 
-    
-
-    const {
-        register,
-        handleSubmit,
-        // watch,
-        formState: { errors },
-    } = useForm()
-
-    const { registerUser, userProfileUpdate, signInWithGoogle } = useAuth()
-
-    const googleLogin = () => {
-        signInWithGoogle()
-        .then(res => console.log(res.user))
-        .catch(err => console.log(err))
-    }
-
-    const handleRegistration = async (data) => {
-        console.log("After register", data.photo[0])
+    const handleRegistration = (data) => {
 
         const profileImg = data.photo[0];
+
         registerUser(data.email, data.password)
-            .then(res => {
-                console.log(res)
+            .then(() => {
 
+                // 1. store the image in form data
                 const formData = new FormData();
-                formData.append("image", profileImg);
+                formData.append('image', profileImg);
 
-                // 2. Upload image to imgbb
-                axios.post(IMG_UPLOAD_URL, formData)
+                // 2. send the photo to store and get the url
+                const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_url}`
+
+                axios.post(image_API_URL, formData)
                     .then(res => {
-                        console.log(res.data)
-                        const updateProfile = {
+                        const photoURL = res.data.data.url;
+
+                        // create user in the database
+                        const userInfo = {
+                            email: data.email,
                             displayName: data.name,
-                            photoURL: res.data.data.url
+                            photoURL: photoURL
                         }
-                        userProfileUpdate(updateProfile)
-                            .then(res => console.log('User profile updateDoc.'))
-                            .catch(err => console.log(err))
+                        axiosSecure.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user created in the database');
+                                }
+                            })
+
+
+                        // update user profile to firebase
+                        const userProfile = {
+                            displayName: data.name,
+                            photoURL: photoURL
+                        }
+
+                        userProfileUpdate(userProfile)
+                            .then(() => {
+                                // console.log('user profile updated done.')
+                                navigate(location.state || '/');
+                            })
+                            .catch(error => console.log(error))
                     })
+
+
+
             })
-            .catch(err => console.log(err))
-
+            .catch(error => {
+                console.log(error)
+            })
     }
+    // const handleRegistration = async (data) => {
+    //     try {
+    //         // 1. Upload profile image if provided
+    //         let photoURL = "";
+    //         if (data.photo && data.photo.length > 0) {
+    //             const IMG_API_KEY = import.meta.env.VITE_image_url;
+    //             const IMG_UPLOAD_URL = `https://api.imgbb.com/1/upload?key=${IMG_API_KEY}`;
+                
+    //             const formData = new FormData();
+    //             formData.append("image", data.photo[0]);
+    
+    //             const imgRes = await axios.post(IMG_UPLOAD_URL, formData);
+    //             photoURL = imgRes.data.data.url;
+    //         }
+    
+    //         // 2. Register user with Firebase
+    //         const result = await registerUser(data.email, data.password);
+    //         const user = result.user;
+    
+    //         // 3. Update Firebase profile
+    //         const updateProfileData = {
+    //             displayName: data.name,
+    //             photoURL: photoURL || "", // fallback if no photo
+    //         };
+    
+    //         await updateUserProfile(updateProfileData);
+    
+    //         // 4. Prepare user object for backend
+    //         const userInfo = {
+    //             email: user.email,
+    //             displayName: data.name,
+    //             photoURL: photoURL || "",
+    //         };
+    
+    //         // 5. Save user to your backend
+    //         const res = await axiosSecure.post("/users", userInfo);
+    //         console.log("User stored in DB:", res.data);
+    
+    //         // 6. Navigate after success
+    //         navigate(location.state?.from || "/");
+    
+    //     } catch (error) {
+    //         console.error("Registration error:", error);
+    //     }
+    // };
+    
 
-    // const onSubmit = (data) => console.log(data) 
     return (
+        <div className="card bg-base-100 w-full mx-auto max-w-sm shrink-0 shadow-2xl">
+            <h3 className="text-3xl text-center">Welcome to Zap Shift</h3>
+            <p className='text-center'>Please Register</p>
+            <form className="card-body" onSubmit={handleSubmit(handleRegistration)}>
+                <fieldset className="fieldset">
+                    {/* name field */}
+                    <label className="label">Name</label>
+                    <input type="text"
+                        {...register('name', { required: true })}
+                        className="input"
+                        placeholder="Your Name" />
+                    {errors.name?.type === 'required' && <p className='text-red-500'>Name is required.</p>}
 
-        <div>
-            <h2 className='text-center text-3xl my-5'>Register First!!</h2>
+                    {/* photo image field */}
+                    <label className="label">Photo</label>
 
-            <div className="hero  ">
+                    <input type="file" {...register('photo', { required: true })} className="file-input" placeholder="Your Photo" />
 
-                <div className="card  w-full max-w-sm shrink-0 shadow-2xl">
-                    <div className="card-body">
-                        <form onSubmit={handleSubmit(handleRegistration)}>
-                            <fieldset className="fieldset">
-                                <div className=''>
-                                    <label className="label">Name</label>
-                                    <input type="text"
-                                        {...register('name', { required: "Name is required." })}
-                                        className="input text-gray-600" placeholder="Name" />
-                                    {errors.name && (
-                                        <p className="text-red-500 text-sm">{errors.name.message}</p>
-                                    )}
-                                </div>
+                    {errors.name?.type === 'required' && <p className='text-red-500'>Photo is required.</p>}
 
-                                <div>
-                                    <label className="label">Photo Url</label>
-                                    <input type="file"
-                                        {...register('photo')}
-                                        className="file-input file-input-ghost" />
-                                </div>
+                    {/* email field */}
+                    <label className="label">Email</label>
+                    <input type="email" {...register('email', { required: true })} className="input" placeholder="Email" />
+                    {errors.email?.type === 'required' && <p className='text-red-500'>Email is required.</p>}
 
+                    {/* password */}
+                    <label className="label">Password</label>
+                    <input type="password" {...register('password', {
+                        required: true,
+                        minLength: 6,
+                        pattern: /^(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/
+                    })} className="input" placeholder="Password" />
+                    {
+                        errors.password?.type === 'required' && <p className='text-red-500'>Password is required.</p>
+                    }
+                    {
+                        errors.password?.type === 'minLength' && <p className='text-red-500'>
+                            Password must be 6 characters or longer
+                        </p>
+                    }
+                    {
+                        errors.password?.type === 'pattern' && <p className='text-red-500'>Password must have at least one uppercase, at least one lowercase, at least one number, and at least one special characters</p>
+                    }
 
-                                <div>
-                                    <label className="label">Email</label>
-                                    <input type="email"
-                                        {...register('email', {
-                                            required: 'Email is required.',
-                                            pattern: {
-                                                value: /^\S+@\S+$/i,
-                                                message: 'Invalid email format'
-                                            }
-                                        })}
-                                        className="input text-gray-600" placeholder="Email" />
-                                    {errors.email && (
-                                        <p className="text-red-500 text-sm">{errors.email.message}</p>
-                                    )}
-                                </div>
-
-
-                                <div>
-                                    <label className="label">Password</label>
-                                    <input type="password"
-                                        {...register('password', {
-                                            required: "Password is required",
-                                            minLength: {
-                                                value: 6,
-                                                message: 'Minimum 6 characters. '
-                                            }
-                                        })}
-                                        className="input text-gray-600"
-                                        placeholder="Password" />
-                                    {errors.password && (
-                                        <p className="text-red-500 text-sm">{errors.password.message}</p>
-                                    )}
-                                </div>
-
-
-                                <button className="btn btn-neutral mt-4" type="submit">Register</button>
-
-                                {/* Google */}
-                            </fieldset>
-                                <button 
-                                onClick={googleLogin}
-                                className="btn mt-4 border-[#e5e5e5]">
-                                    <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g><path d="m0 0H512V512H0" fill="#fff"></path><path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path><path fill="#4285f4" d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"></path><path fill="#fbbc02" d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"></path><path fill="#ea4335" d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"></path></g></svg>
-                                    Register with Google
-                                </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                    <div><a className="link link-hover">Forgot password?</a></div>
+                    <button className="btn btn-neutral mt-4">Register</button>
+                </fieldset>
+                <p>Already have an account <Link
+                    state={location.state}
+                    className='text-blue-400 underline'
+                    to="/login">Login</Link></p>
+            </form>
+            <SocialLogin></SocialLogin>
         </div>
     );
 };
