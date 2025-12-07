@@ -9,24 +9,30 @@ const ManageContests = () => {
     queryKey: ["all-contests"],
     queryFn: async () => {
       const res = await axiosSecure.get("/contests");
-      return res.data;
+      return res.data; 
     },
   });
+  console.log('contests', contests)
 
-  const handleConfirm = async (id) => {
-    await axiosSecure.patch(`/contests/confirm/${id}`);
+  const changeStatus = async(id, status) => {
+    console.log(id, status)
+    await axiosSecure.patch(`/contest/changeStatus/${id}`, {status});
+  }
+
+  const handleConfirm = async (contest, status) => {
+    changeStatus(contest._id, status);
     toast.success("Contest confirmed");
     refetch();
   };
 
-  const handleReject = async (id) => {
-    await axiosSecure.patch(`/contests/reject/${id}`);
+  const handleReject = async (contest, status) => {
+    changeStatus(contest._id, status);
     toast.info("Contest rejected");
     refetch();
   };
 
   const handleDelete = async (id) => {
-    await axiosSecure.delete(`/contests/${id}`);
+    await axiosSecure.delete(`/contest/${id}`);
     toast.error("Contest deleted");
     refetch();
   };
@@ -48,7 +54,7 @@ const ManageContests = () => {
           </thead>
 
           <tbody>
-            {contests.map((contest, index) => (
+            {Array.isArray(contests) && contests.map((contest, index) => (
               <tr key={contest._id}>
                 <td>{index + 1}</td>
                 <td>{contest.name}</td>
@@ -59,14 +65,14 @@ const ManageContests = () => {
                   {contest.status === "pending" && (
                     <>
                       <button
-                        onClick={() => handleConfirm(contest._id)}
+                        onClick={() => handleConfirm(contest, 'confirmed')}
                         className="px-3 py-1 bg-green-500 text-white rounded"
                       >
                         Confirm
                       </button>
 
                       <button
-                        onClick={() => handleReject(contest._id)}
+                        onClick={() => handleReject(contest, 'rejected')}
                         className="px-3 py-1 bg-yellow-500 text-white rounded"
                       >
                         Reject

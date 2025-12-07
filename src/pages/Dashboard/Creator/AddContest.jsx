@@ -1,54 +1,64 @@
 // AddContest.jsx
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import useAxios from "../../../hooks/useAxios";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import useAuth from "../../../hooks/useAuth";
 
 const AddContest = () => {
-  const { register, handleSubmit, reset } = useForm();
-  const [deadline, setDeadline] = useState(null);
+  const { register, handleSubmit, reset, control } = useForm({
+    defaultValues: {
+      deadline: null,
+    },
+  });
   const axiosSecure = useAxios()
   const navigate = useNavigate()
+  const { user } = useAuth()
 
   const onSubmit = (data) => {
-    const contest = { ...data, deadline };
+    const creatorName = user.displayName
+    const creatorEmail = user.email
+    data.creatorName = creatorName
+    data.creatorEmail = creatorEmail
+    console.log('after saving parcel', data);
     Swal.fire({
       title: "Agree with the Cost?",
-      text: `You will be charged ${data.cost} taka!`,
+      text: `You will be charged ${data.price} taka!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Confirm and Continue Payment!"
-  }).then((result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
 
-          // save the parcel info to the database
-          axiosSecure.post('/contest', data)
-              .then(res => {
-                  console.log('after saving parcel', res.data);
-                  if (res.data.insertedId) {
-                      navigate('/dashboard/creator/my-contests')
-                      Swal.fire({
-                          position: "top-end",
-                          icon: "success",
-                          title: "Parcel has created. Please Pay",
-                          showConfirmButton: false,
-                          timer: 2500
-                      });
-                  }
-              })
+
+        // save the parcel info to the database
+        axiosSecure.post('/contest', data)
+          .then(res => {
+            console.log('after saving parcel', res.data);
+            if (res.data.insertedId) {
+              navigate('/dashboard/creator/my-contests')
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Parcel has created. Please Pay",
+                showConfirmButton: false,
+                timer: 2500
+              });
+            }
+          })
 
 
       }
-  });
-    console.log("Contest Created:", contest);
+    });
+    // console.log("Contest Created:", contest);
 
     // API POST HERE
-    reset();
+    // reset();
   };
 
   return (
@@ -90,37 +100,36 @@ const AddContest = () => {
 
                   <div>
                     <label className="block mb-1">Deadline</label>
-                    <DatePicker
-                      selected={deadline}
-                      required
-                      placeholderText="select date"
-                      onChange={(date) => setDeadline(date)}
-                      className="input"
+
+                    <Controller
+                      control={control}
+                      name="deadline"
+                      rules={{ required: "Deadline is required" }}
+                      render={({ field }) => (
+                        <DatePicker
+                          selected={field.value}
+                          onChange={(date) => field.onChange(date)}
+                          placeholderText="Select date"
+                          className="input"
+                        />
+                      )}
                     />
+
                   </div>
+
                 </div>
 
               </fieldset>
-             <div className="flex justify-center items-center">
-             <button className="bg-blue-500  text-white px-4 py-2 rounded">
-                Create Contest
-              </button>
-             </div>
+              <div className="flex justify-center items-center">
+                <button className="bg-blue-500  text-white px-4 py-2 rounded">
+                  Create Contest
+                </button>
+              </div>
 
             </form>
           </div>
         </div>
       </div>
-
-
-      {/* <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 flex flex-col items-center justify-center">
-
-        
-
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">
-          Create Contest
-        </button>
-      </form> */}
     </div>
   );
 };

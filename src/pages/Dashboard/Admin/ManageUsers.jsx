@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const ManageUsers = () => {
-  const axiosSecure = useAxios();
+
+  const navigate = useNavigate()
+  const axiosSecure = useAxios()
+
+
 
   // Load all users
   const { data: users = [], refetch } = useQuery({
@@ -12,11 +17,15 @@ const ManageUsers = () => {
       const res = await axiosSecure.get("/users");
       return res.data;
     },
+    refetchOnMount: true,       // ✅ always fetch fresh data when component mounts
+    refetchOnWindowFocus: false
   });
 
-  const handleChangeRole = async (id, newRole) => {
+  const handleChangeRole = async (email, newRole) => {
     try {
-      await axiosSecure.patch(`/users/role/${id}`, { role: newRole });
+      console.log(email, newRole);
+
+      await axiosSecure.patch(`/users/role/${email}`, { role: newRole });
       toast.success("Role updated");
       refetch();
     } catch {
@@ -34,7 +43,7 @@ const ManageUsers = () => {
             <tr>
               <th>#</th>
               <th>Name</th>
-              <th>Email</th>
+              <th>Creator Email</th>
               <th>Current Role</th>
               <th>Change Role</th>
             </tr>
@@ -44,14 +53,14 @@ const ManageUsers = () => {
             {users.map((u, index) => (
               <tr key={u._id}>
                 <td>{index + 1}</td>
-                <td>{u.name}</td>
+                <td>{u.displayName}</td>
                 <td>{u.email}</td>
                 <td className="font-semibold">{u.role}</td>
                 <td>
                   <select
                     className="border rounded p-1"
                     value={u.role}
-                    onChange={(e) => handleChangeRole(u._id, e.target.value)}
+                    onChange={(e) => handleChangeRole(u.email, e.target.value)}
                   >
                     <option value="user">User</option>
                     <option value="creator">Creator</option>

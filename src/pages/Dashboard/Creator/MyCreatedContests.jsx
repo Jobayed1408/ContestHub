@@ -1,58 +1,114 @@
-// MyCreatedContests.jsx
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import useAxios from "../../../hooks/useAxios";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
+import useAuth from "../../../hooks/useAuth";
 
 const MyCreatedContests = () => {
+  const { user } = useAuth();  // <-- FIXED
+  const axiosPublic = useAxios();
+  const queryClient = useQueryClient();
+  console.log("User data",user?.email)
+
+  const { data: contests = [], isLoading } = useQuery({
+    queryKey: ["my-contests", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/contests/creator/${user.email}`);
+      return res.data;
+    },
+    enabled: !!user?.email
+  });
+
+  console.log('contests', contests);
+
+  const handleDelete = async (id) => {
+    console.log("Delete contest:", id);
+
+    Swal.fire({
+      title: "Delete Contest?",
+      text: `Are you sure?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Continue to delete..!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+
+        // save the contests info to the database
+        axiosPublic.delete(`/contest/${id}`)
+          .then(res => {
+            queryClient.invalidateQueries(["allContests"]);
+            console.log("Updated:", res.data);
+
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Contest deleted!",
+              showConfirmButton: false,
+              timer: 2000
+            });
+
+
+          })
+          .catch(err => {
+            console.error(err);
+          });
+
+
+      }
+    })
+    // TODO: call DELETE API
+
+  };
 
   
 
-  const contests = [
-    { id: 1, name: "Logo Design", status: "Pending" },
-    { id: 2, name: "Photography", status: "Confirmed" },
-    { id: 3, name: "Writing", status: "Rejected" },
-  ];
-
-  const handleDelete = (id) => {
-    console.log("Delete contest:", id);
-    // DELETE API here
-  };
-
   return (
-    <div>
-      <h3 className="text-xl font-bold mb-4">My Created Contests</h3>
+    
+    <div className="p-6">
+      { isLoading && <p>Loading...</p> }
+      { !isLoading && contests.length === 0 && <p>No contests found.</p> }
+      <h2 className="text-2xl font-semibold mb-4">My Created Contests</h2>
 
-      <table className="w-full border">
-        <thead>
-          <tr className="bg-gray-100">
-            <th>Name</th>
-            <th>Status</th>
-            <th>Actions</th>
-            <th>Submissions</th>
+      <table className="w-full border border-gray-300 rounded-lg overflow-hidden">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="p-3 text-left">Name</th>
+            <th className="p-3 text-left">Status</th>
+            <th className="p-3 text-left">Tracking Contest</th>
+            <th className="p-3 text-left">Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          {contests.map((c) => (
-            <tr key={c.id} className="border">
-              <td>{c.name}</td>
-              <td>{c.status}</td>
+          {Array.isArray(contests) && contests.map((contest) => (
+            <tr key={contest._id} className="border-b hover:bg-gray-50">
+              <td className="p-3">{contest.name}</td>
+              <td className="p-3 capitalize">{contest.status}</td>
+              <td className="p-3 capitalize">{contest.trackingId}</td>
 
-              <td className="space-x-2">
-                {c.status === "Pending" && (
+              <td className="p-3 space-x-3">
+                {/* Edit button → only if pending */}
+                {contest.status === "pending" && (
                   <>
-                    <Link to={`/dashboard/creator/edit/${c.id}`}>
-                      <button className="btn">Edit</button>
+                    <Link to={`/dashboard/creator/edit/${contest._id}`} className="px-3 py-1 bg-blue-500 text-white rounded">
+                      Edit
                     </Link>
 
-                    <button onClick={() => handleDelete(c.id)} className="btn">
+                    <Link
+                      onClick={() => handleDelete(contest._id)}
+                      className="px-3 py-1 bg-red-600 text-white rounded"
+                    >
                       Delete
-                    </button>
+                    </Link>
                   </>
                 )}
-              </td>
 
-              <td>
-                <Link to={`/dashboard/creator/submissions/${c.id}`}>
-                  <button className="btn">See Submissions</button>
+                {/* Always show submissions button */}
+                <Link to={`/dashboard/creator/submissions/${contest._id}`} className="px-3 py-1 bg-green-600 text-white rounded">
+                  See Submissions
                 </Link>
               </td>
             </tr>

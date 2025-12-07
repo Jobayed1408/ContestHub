@@ -23,6 +23,8 @@ import EditContest from "../pages/Dashboard/Creator/EditContest";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import ManageContests from "../pages/Dashboard/Admin/ManageContests";
 import ConfirmContest from "../pages/Dashboard/Admin/ConfirmContest";
+import AllContest from "../pages/Contesst/AllContest";
+import ContestDetails from "../pages/Contesst/ContestDetails";
 
 
 export const router = createBrowserRouter([
@@ -39,7 +41,15 @@ export const router = createBrowserRouter([
           path: 'coverage',
           element: <PrivateRoute><CoverageArea></CoverageArea></PrivateRoute>,
           loader: ()=>fetch('/data/warehouses.json').then(res => res.json() )
-        }
+        },
+        {
+          path: 'all-contests',
+          element: <AllContest></AllContest>,
+        },
+        {
+          path: 'contest-details/:id',
+          element: <PrivateRoute><ContestDetails></ContestDetails></PrivateRoute>
+        },
       ]
     },
 
@@ -60,25 +70,6 @@ export const router = createBrowserRouter([
     },
 
     // DashBoard
-
-    // {
-    //   path: "/dashboard",
-    //   element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
-    //   children: [
-    //     { path: "user/my-contests", element: <RoleRoute role="user"><MyContests /></RoleRoute> },
-    //     { path: "user/my-winnings", element: <RoleRoute role="user"><MyWinningContests /></RoleRoute> },
-    //     { path: "user/profile", element: <RoleRoute role="user"><MyProfile /></RoleRoute> },
-        
-    //     { path: "creator/add-contest", element: <RoleRoute role="creator"><AddContest /></RoleRoute> },
-    //     { path: "creator/my-contests", element: <RoleRoute role="creator"><MyCreatedContests /></RoleRoute> },
-    //     { path: "creator/submissions/:contestId", element: <RoleRoute role="creator"><Submissions /></RoleRoute> },
-    //     { path: "creator/edit/:contestId", element: <RoleRoute role="creator"><EditContest /></RoleRoute> },
-        
-    //     { path: "admin/manage-users", element: <RoleRoute role="admin"><ManageUsers /></RoleRoute> },
-    //     { path: "admin/manage-contests", element: <RoleRoute role="admin"><ManageContests /></RoleRoute> },
-    //   ]
-    // },
-    
     {
       path: 'dashboard',
       element: <DashboardLayout></DashboardLayout> ,
@@ -91,7 +82,7 @@ export const router = createBrowserRouter([
         // User dashboard functionality 
         {
           path: 'user',
-          Component: User,
+          element: <PrivateRoute><User></User></PrivateRoute>,
           children: [
             { path: "my-contests", element: <MyContests /> },
             { path: "my-winnings", element: <MyWinningContests /> },
@@ -100,7 +91,7 @@ export const router = createBrowserRouter([
         },
         {
           path: 'creator',
-          Component: User,
+          element: <PrivateRoute><User></User></PrivateRoute>,
           children: [
             { path: "add-contest", element: <AddContest /> },
             { path: "my-contests", element: <MyCreatedContests /> },
@@ -110,7 +101,7 @@ export const router = createBrowserRouter([
         },
         {
           path: 'admin',
-          Component: Admin,
+          element: <PrivateRoute><User></User></PrivateRoute>,
           children: [
             { path: "manage-users", element: <ManageUsers /> },
             { path: "manage-contests", element: <ManageContests /> },
