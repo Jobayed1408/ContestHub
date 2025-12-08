@@ -27,7 +27,7 @@ const MyProfile = () => {
         {user.displayName}
         <br />
         {user.email} <br />
-        <img src={user.photoURL} alt="" />
+        <img src={user.photoURL} className="w-1/3" alt="" />
         
       <h3 className="text-xl font-bold mb-4">My Profile</h3>
 

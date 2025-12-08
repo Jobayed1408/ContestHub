@@ -3,7 +3,7 @@ import "./Loader.css"; // CSS file import
 
 const Loader = () => {
     return (
-        <div className="main-container">
+        <div className="main-container h-[100px]">
             <div className="loader">
                 <svg
                     viewBox="0 0 900 900"
@@ -13,8 +13,8 @@ const Loader = () => {
                     <defs>
                         <linearGradient
                             id="traceGradient1"
-                            x1="250"
                             y1="120"
+                            x1="250"
                             x2="100"
                             y2="200"
                             gradientUnits="userSpaceOnUse"

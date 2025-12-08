@@ -25,90 +25,108 @@ import ManageContests from "../pages/Dashboard/Admin/ManageContests";
 import ConfirmContest from "../pages/Dashboard/Admin/ConfirmContest";
 import AllContest from "../pages/Contesst/AllContest";
 import ContestDetails from "../pages/Contesst/ContestDetails";
+import Payment from "../pages/Payment/Payment";
+import PaymentSuccess from "../pages/Payment/PaymentSuccess";
+import PaymentCancelled from "../pages/Payment/PaymentCancelled";
 
 
 export const router = createBrowserRouter([
-    {
-      path: "/",
-      errorElement: <ErrorPage />,
-      Component: RootLayout,
-      children: [
-        {
-            index: true,
-            Component: Home, 
-        },
-        {
-          path: 'coverage',
-          element: <PrivateRoute><CoverageArea></CoverageArea></PrivateRoute>,
-          loader: ()=>fetch('/data/warehouses.json').then(res => res.json() )
-        },
-        {
-          path: 'all-contests',
-          element: <AllContest></AllContest>,
-        },
-        {
-          path: 'contest-details/:id',
-          element: <PrivateRoute><ContestDetails></ContestDetails></PrivateRoute>
-        },
-      ]
-    },
+  {
+    path: "/",
+    errorElement: <ErrorPage />,
+    Component: RootLayout,
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: 'coverage',
+        element: <PrivateRoute><CoverageArea></CoverageArea></PrivateRoute>,
+        loader: () => fetch('/data/warehouses.json').then(res => res.json())
+      },
+      {
+        path: 'all-contests',
+        element: <AllContest></AllContest>,
+      },
+      {
+        path: 'contest-details/:id',
+        element: <PrivateRoute><ContestDetails></ContestDetails></PrivateRoute>
+      },
 
-    // Authentication 
-    {
-      path: '/',
-      Component: AuthLayout,
-      children: [
-        {
-          path: 'register',
-          Component: Register,
-        },
-        {
-          path: 'login',
-          Component: Login,
-        },
-      ]
-    },
+    ]
+  },
 
-    // DashBoard
-    {
-      path: 'dashboard',
-      element: <DashboardLayout></DashboardLayout> ,
-      children: [
-        {
-          index: true,
-          Component: DashboardHome,
-        },
+  // Authentication 
+  {
+    path: '/',
+    Component: AuthLayout,
+    children: [
+      {
+        path: 'register',
+        Component: Register,
+      },
+      {
+        path: 'login',
+        Component: Login,
+      },
+    ]
+  },
 
-        // User dashboard functionality 
-        {
-          path: 'user',
-          element: <PrivateRoute><User></User></PrivateRoute>,
-          children: [
-            { path: "my-contests", element: <MyContests /> },
-            { path: "my-winnings", element: <MyWinningContests /> },
-            { path: "profile", element: < MyProfile/> },
-          ]
-        },
-        {
-          path: 'creator',
-          element: <PrivateRoute><User></User></PrivateRoute>,
-          children: [
-            { path: "add-contest", element: <AddContest /> },
-            { path: "my-contests", element: <MyCreatedContests /> },
-            { path: "submissions/:contestId", element: <Submissions /> },
-            { path: "edit/:contestId", element: <EditContest /> }, 
-          ]
-        },
-        {
-          path: 'admin',
-          element: <PrivateRoute><User></User></PrivateRoute>,
-          children: [
-            { path: "manage-users", element: <ManageUsers /> },
-            { path: "manage-contests", element: <ManageContests /> },
-            { path: "confirm-contests", element: <ConfirmContest /> },
-          ]
-        },
+  // DashBoard
+  {
+    path: 'dashboard',
+    element: <DashboardLayout></DashboardLayout>,
+    children: [
+      {
+        index: true,
+        Component: DashboardHome,
+      },
 
-      ]
-    }
-  ]);
+      {
+        path: 'payment/:contestId',
+        element: <PrivateRoute><Payment></Payment></PrivateRoute>
+      },
+      {
+        path: 'payment-success',
+        element: <PrivateRoute><PaymentSuccess /></PrivateRoute>
+      },
+      {
+        path: 'payment-canceled',
+        element: <PrivateRoute><PaymentCancelled /></PrivateRoute>
+      },
+
+      // User dashboard functionality 
+      {
+        path: 'user',
+        element: <PrivateRoute><User></User></PrivateRoute>,
+        children: [
+          // { path: 'payment-success', element: },
+          { path: "my-contests", element: <MyContests /> },
+          { path: "my-winnings", element: <MyWinningContests /> },
+          { path: "profile", element: < MyProfile /> },
+        ]
+      },
+      {
+        path: 'creator',
+        element: <PrivateRoute><Creator /></PrivateRoute>,
+        children: [
+          { path: "add-contest", element: <AddContest /> },
+          { path: "my-contests", element: <MyCreatedContests /> },
+          { path: "submissions/:contestId", element: <Submissions /> },
+          { path: "edit/:contestId", element: <EditContest /> },
+        ]
+      },
+      {
+        path: 'admin',
+        element: <PrivateRoute> <Admin /> </PrivateRoute>,
+        children: [
+          { path: "manage-users", element: <ManageUsers /> },
+          { path: "manage-contests", element: <ManageContests /> },
+          { path: "confirm-contests", element: <ConfirmContest /> },
+        ]
+      },
+
+    ]
+  }
+]);

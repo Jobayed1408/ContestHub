@@ -4,7 +4,6 @@ import { Outlet } from 'react-router';
 const Admin = () => {
     return (
         <div>
-            Admin
             <Outlet></Outlet>
         </div>
     );

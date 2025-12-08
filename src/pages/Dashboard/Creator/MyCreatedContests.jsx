@@ -8,7 +8,7 @@ const MyCreatedContests = () => {
   const { user } = useAuth();  // <-- FIXED
   const axiosPublic = useAxios();
   const queryClient = useQueryClient();
-  console.log("User data",user?.email)
+  // console.log("User data",user?.email)
 
   const { data: contests = [], isLoading } = useQuery({
     queryKey: ["my-contests", user?.email],

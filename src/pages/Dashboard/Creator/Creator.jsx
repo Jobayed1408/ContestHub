@@ -4,7 +4,6 @@ import { Outlet } from 'react-router';
 const Creator = () => {
     return (
         <div>
-            Creator
             <Outlet></Outlet>
         </div>
     );

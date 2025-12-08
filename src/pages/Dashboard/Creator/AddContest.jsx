@@ -26,7 +26,7 @@ const AddContest = () => {
     console.log('after saving parcel', data);
     Swal.fire({
       title: "Agree with the Cost?",
-      text: `You will be charged ${data.price} taka!`,
+      text: `Charged for this contest ${data.price} taka!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
+import Loader from "../../Components/Loader/Loader";
 
 const ContestDetails = () => {
   const { id } = useParams();
@@ -48,16 +49,16 @@ const ContestDetails = () => {
   }, [contest]);
 
   // REGISTER BUTTON — GO TO PAYMENT
-  const handleRegister = () => {
+  const handleRegister = (contestId) => {
     if (!user) {
       navigate("/login");
       return;
     }
 
-    navigate(`/payment/${contest._id}`);
+    navigate(`/dashboard/payment/${contestId}`);
   };
 
-  if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+  if (isLoading) return <Loader></Loader>;
 
   return (
     <div className="max-w-5xl mx-auto p-6">
@@ -115,7 +116,7 @@ const ContestDetails = () => {
 
       {/* REGISTER BUTTON */}
       <button
-        onClick={handleRegister}
+        onClick={()=> handleRegister(contest._id)}
         disabled={timeLeft === "Contest Ended"}
         className={`w-full mt-8 py-3 text-white text-lg rounded-lg transition ${
           timeLeft === "Contest Ended"

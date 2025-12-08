@@ -55,7 +55,7 @@ const NavBar = () => {
                             </NavItem>
                         </li>
                         <li>
-                            <NavItem to={"/a"}>
+                            <NavItem to={"/dashboard"}>
                                 <LuLayoutDashboard /> DashBoard
                             </NavItem>
                         </li>
@@ -97,13 +97,13 @@ const NavBar = () => {
                         </NavItem>
                     </li>
                     <li>
-                        <NavItem to={"/g"}>
+                        <NavItem to={"/all-contests"}>
                             <MdOutlineDensitySmall /> All Contents
                         </NavItem>
 
                     </li>
                     <li>
-                        <NavItem to={"/"}>
+                        <NavItem to={"/dashboard"}>
                             <LuLayoutDashboard /> Dashboard
                         </NavItem>
                     </li>
