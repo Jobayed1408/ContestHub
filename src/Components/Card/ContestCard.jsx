@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const ContestCard = ({ contest }) => {
-    console.log('contest', contest)
+    // console.log('contest', contest)
   return (
     <div className="rounded-xl shadow-md border hover:shadow-xl transition p-4 bg-white dark:bg-gray-900">
       <img

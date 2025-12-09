@@ -16,6 +16,7 @@ const AllContest = () => {
     },
   });
 
+  // console.log("Allcontest", contests)
   // Tabs list
   const tabs = ["All", "Image Design", "Article Writing", "Logo Design", "Marketing"];
 

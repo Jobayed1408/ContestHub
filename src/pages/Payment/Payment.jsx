@@ -9,6 +9,7 @@ const Payment = () => {
     const { contestId } = useParams();
     const axiosSecure = useAxios()
     const { user } = useAuth()
+    // console.log('timeLeft', timeLeft)
 
     const { isLoading, data: contest = {} } = useQuery({
         queryKey: ["contest", contestId],
@@ -17,18 +18,38 @@ const Payment = () => {
             return res.data;
         },
     });
+    // console.log('contest',contest)
 
     const handlePayment = async () => {
-        // Stripe Session Example (You will add stripe later)
+
+        if (!user?.email) {
+            alert("User email not loaded yet. Please wait a moment and try again.");
+            return;
+        }
+
+        const check = await axiosSecure.get(`/payment-status`, {
+            params: {
+                contestId: contest._id,
+                email: user.email
+            }
+        });
+    
+        if (check.data.alreadyPaid) {
+            alert("You already registered for this contest!");
+            return;
+        }
+
         const paymentInfo = {
             price: contest.price,
             contestId: contest._id,
-            contestCreatorEmail: contest.creatorEmail, // or logged in user email
+            contestCreatorEmail: contest.creatorEmail,
             contestName: contest.name,
             participantEmail: user.email,
-            trackingId: contest.trackingId || 'Id not found'
+            trackingId: contest.trackingId || 'Id not found',
+            deadline: contest.deadline,
+            participants: contest.participants
         };
-
+        // console.log('paymentInfo',paymentInfo) 
         const res = await axiosSecure.post("/payment-checkout-session", paymentInfo);
         window.location.href = res.data.url;
     };

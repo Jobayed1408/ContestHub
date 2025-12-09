@@ -1,60 +1,114 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router";
+import useAxios from "../../../hooks/useAxios";
+import useAuth from "../../../hooks/useAuth";
 
 const MyContests = () => {
+  const axiosSecure = useAxios();
+  const { user } = useAuth();
+  const [myContests, setMyContests] = useState([]);
 
+  // Fetch contests created by logged-in user
+  useEffect(() => {
+    if (!user?.email) return;
+
+    console.log('user email',user.email) 
+    axiosSecure
+      .get(`/user-contests?email=${user.email}`)
+      .then((res) => setMyContests(res.data))
+      .catch((err) => console.error("Error fetching contests:", err));
+  }, [user?.email, axiosSecure]);
+
+  console.log('myContests', myContests)
+
+  // Helper: calculate remaining time
+  const getRemainingTime = (deadline) => {
+    // if (!deadline) return "No deadline";
+    console.log("Deadline received:", deadline);
+
+    const end = new Date(deadline);
+    if (isNaN(end)) return "Invalid date";
+  
+    const now = new Date();
+    const diff = end - now;
+    if (diff <= 0) return "Expired";
+  
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    return days > 0 
+    ? `${days}d ${hours}h ${minutes}m ${seconds}s`
+    : `${hours}h ${minutes}m ${seconds}s`;
+  };
   
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto mt-6">
       <table className="table">
-        {/* head */}
         <thead>
           <tr>
-            <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
             <th></th>
+            <th>Contest</th>
+            <th>Participants</th>
+            <th>Remaining Time</th>
+            <th>Payment Status</th>
+            <th>Action</th>
           </tr>
         </thead>
+
         <tbody>
-          {/* row 1 */}
-          <tr>
-            <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th>
-            <td>
-              <div className="flex items-center gap-3">
-                <div className="avatar">
-                  <div className="mask mask-squircle h-12 w-12">
-                    <img
-                      src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
+          {myContests.length === 0 && (
+            <tr>
+              <td colSpan={5} className="text-center py-6 text-gray-500">
+                No contests created yet.
+              </td>
+            </tr>
+          )}
+
+          {myContests.map((contest, index) => (
+            <tr key={contest._id}>
+              <th>
+                <label>
+                  {index+1}
+                </label>
+              </th>
+
+              {/* Contest Name + Image */}
+              <td>
+                <div className="flex items-center gap-3">
+                  
+                  <div>
+                    <div className="font-bold">{contest.contestName}</div>
+                    <div className="text-sm opacity-50">
+                      Created by: {contest.contestCreatorEmail}
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <div className="font-bold">Hart Hagerty</div>
-                  <div className="text-sm opacity-50">United States</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              Zemlak, Daniel and Leannon
-              <br />
-              <span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
-            </td>
-            <td>Purple</td>
-            <th>
-              <button className="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-        
+              </td>
+
+              {/* Participants Count */}
+              <td>
+                {contest.participants || 0}
+                <span className="badge badge-ghost badge-sm">
+                  Participants joined
+                </span>
+              </td>
+
+              {/* Remaining Time */}
+              <td>{getRemainingTime(contest.deadline)}</td>
+
+              {/* Remaining Time */}
+              <td><bt className="btn btn-success">{contest.status}</bt></td>
+
+              {/* Action Button */}
+              <th>
+                <Link to={`/contest-details/${contest.contestId}`}>
+                  <button className="btn btn-primary ">Details</button>
+                </Link>
+              </th>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
