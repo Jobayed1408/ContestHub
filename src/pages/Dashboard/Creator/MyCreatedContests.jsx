@@ -3,6 +3,7 @@ import useAxios from "../../../hooks/useAxios";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
+import Loader from "../../../Components/Loader/Loader";
 
 const MyCreatedContests = () => {
   const { user } = useAuth();  // <-- FIXED
@@ -67,13 +68,13 @@ const MyCreatedContests = () => {
 
   return (
     
-    <div className="p-6">
-      { isLoading && <p>Loading...</p> }
-      { !isLoading && contests.length === 0 && <p>No contests found.</p> }
-      <h2 className="text-2xl font-semibold mb-4">My Created Contests</h2>
+    <div className="p-6 ">
+      { isLoading && <Loader/> }
+      { !isLoading && contests.length === 0 && <p className="text-black">No contests found.</p> }
+      <h2 className="text-2xl text-gray-600 font-semibold mb-4">My Created Contests</h2>
 
       <table className="w-full border border-gray-300 rounded-lg overflow-hidden">
-        <thead className="bg-gray-100">
+        <thead className="bg-gray-500">
           <tr>
             <th className="p-3 text-left">Name</th>
             <th className="p-3 text-left">Status</th>
@@ -84,7 +85,7 @@ const MyCreatedContests = () => {
 
         <tbody>
           {Array.isArray(contests) && contests.map((contest) => (
-            <tr key={contest._id} className="border-b hover:bg-gray-50">
+            <tr key={contest._id} className="border-b hover:bg-gray-50 text-black">
               <td className="p-3">{contest.name}</td>
               <td className="p-3 capitalize">{contest.status}</td>
               <td className="p-3 capitalize">{contest.trackingId}</td>

@@ -28,6 +28,7 @@ import ContestDetails from "../pages/Contesst/ContestDetails";
 import Payment from "../pages/Payment/Payment";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancelled from "../pages/Payment/PaymentCancelled";
+import ContestsSearchPage from "../pages/Home/Banner/ContestsSearchPage";
 
 
 export const router = createBrowserRouter([
@@ -50,9 +51,13 @@ export const router = createBrowserRouter([
         element: <AllContest></AllContest>,
       },
       {
-        path: 'contest-details/:id',
+        path: 'contest/:id',
         element: <PrivateRoute><ContestDetails></ContestDetails></PrivateRoute>
       },
+      { 
+        path: "/contests/search", 
+        element: <ContestsSearchPage /> 
+      }
 
     ]
   },

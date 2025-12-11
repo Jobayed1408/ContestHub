@@ -3,131 +3,172 @@ import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
 import DashboardHome from "./DashboardHome";
+import { FaHome } from "react-icons/fa";
+import { AiOutlineIdcard, AiOutlineMenuUnfold } from "react-icons/ai";
+import { BsReverseLayoutTextWindowReverse } from "react-icons/bs";
+import { ImProfile } from "react-icons/im";
+
+// NOTE: Assuming your project is using Tailwind CSS,
+// and 'drawer' classes are from DaisyUI or a custom framework you are using.
+// We primarily update the 'bg-' and 'text-' colors to be monochromatic.
 
 const Dashboard = () => {
-  const { user } = useAuth()
-  const axiosPublic = useAxios()
-  const [userInfo, setUserInfo] = useState('user')
-  console.log('userInfo', user)
+  const { user } = useAuth();
+  const axiosPublic = useAxios();
+  const [userInfo, setUserInfo] = useState('user');
+  
+  // Fetch user role
   useEffect(() => {
     if (user?.email) {
-      axiosPublic.get(`/users/${user.email}`).then((res) => {
-        setUserInfo(res.data.role || 'user'); 
-        console.log('userInfo', res)
-      });
+      axiosPublic.get(`/users/${user.email}`)
+        .then((res) => {
+          setUserInfo(res.data.role || 'user');
+        })
+        .catch(error => {
+            console.error("Error fetching user role:", error);
+            // Optional: Handle error state
+        });
     }
   }, [user, axiosPublic]);
-  // console.log('userInfo', userInfo)
+
+  // Define Nav links based on user role
+  const sharedLinks = (
+    <>
+      <li>
+        <Link to={'/dashboard'} className="font-semibold" data-tip="Homepage">
+          <FaHome className="size-5" />
+          <span>Home</span>
+        </Link>
+      </li>
+    </>
+  );
+
+  const userLinks = (
+    <>
+      <li>
+        <Link to={'/dashboard/user/my-contests'} data-tip="My Contest">
+          <AiOutlineIdcard className="size-5" />
+          <span>My Contest</span>
+        </Link>
+      </li>
+      <li>
+        <Link to={'/dashboard/user/my-winnings'} data-tip="My Winnind Contests">
+          <BsReverseLayoutTextWindowReverse className="size-5" />
+          <span>My Winning Contests</span>
+        </Link>
+      </li>
+      <li>
+        <Link to={'/dashboard/user/profile'} data-tip="My Profile">
+          <ImProfile className="size-5" />
+          <span>My Profile</span>
+        </Link>
+      </li>
+    </>
+  );
+
+  const creatorLinks = (
+    <>
+      <li>
+        <Link to={'/dashboard/creator/add-contest'} data-tip="Add Contest">
+          {/* Custom SVG replaced with a simplified, consistent icon style */}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="size-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><line x1="12" y1="17" x2="12" y2="11"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+          <span>Add Contest</span>
+        </Link>
+      </li>
+      <li>
+        <Link to={'/dashboard/creator/my-contests'} data-tip="My Created Contest">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="size-5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+          <span>My Created Contest</span>
+        </Link>
+      </li>
+    </>
+  );
+
+  const adminLinks = (
+    <>
+      <li>
+        <Link to={'/dashboard/admin/manage-contests'} data-tip="Manage Contest">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="size-5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span>Manage Contest</span>
+        </Link>
+      </li>
+      <li>
+        <Link to={'/dashboard/admin/manage-users'} data-tip="Manage Users">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="size-5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+          <span>Manage Users</span>
+        </Link>
+      </li>
+    </>
+  );
+
+  const roleLinks = () => {
+    if (userInfo === 'user') return userLinks;
+    if (userInfo === 'creator') return creatorLinks;
+    if (userInfo === 'admin') return adminLinks;
+    return null;
+  };
 
   return (
-    <div>
+    // Use an off-white background for the entire page content
+    <div className="bg-gray-50 min-h-screen">
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content">
-          {/* Navbar */}
-          <nav className="navbar w-full bg-base-300">
-            <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
-              {/* Sidebar toggle icon */}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
-            </label>
-            <Link to={'/'} className="px-4">Contest Hub</Link>
+        
+        {/* === MAIN CONTENT AREA === */}
+        <div className="drawer-content flex flex-col">
+          
+          {/* Navbar: High contrast header with shadow */}
+          <nav className="navbar w-full bg-white text-gray-900 border-b border-gray-200 shadow-md p-4">
+            <div className="flex-none lg:hidden">
+              <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost text-gray-800">
+                <AiOutlineMenuUnfold className="size-6" />
+              </label>
+            </div>
+            <div className="flex-1 px-2 mx-2">
+                <Link to={'/'} className="text-2xl md:text-3xl font-black tracking-tighter">
+                    CONTEST HUB
+                </Link>
+            </div>
           </nav>
-          {/* Page content here */}
-          <div className="p-4">
-            welcome
-            <DashboardHome />
+
+          {/* Page Content: The main content container */}
+          <div className="p-4 md:p-8 flex-grow">
+            <h2 className="text-xl font-medium text-gray-600 mb-4 capitalize">Welcome, {user?.displayName || userInfo}</h2>
+            {/* The Outlet for nested routes like MyProfile.jsx */}
+            <DashboardHome /> 
           </div>
         </div>
 
-        <div className="drawer-side is-drawer-close:overflow-visible">
+        {/* === SIDEBAR (Drawer) === */}
+        <div className="drawer-side z-20">
           <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-          <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-            {/* Sidebar content here */}
-            <ul className="menu w-full grow">
-              {/* List item */}
-              <li>
-                <Link to={'/dashboard'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
-                  {/* Home icon */}
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                  <span className="is-drawer-close:hidden">Home</span>
-                </Link>
-              </li>
+          {/* Sidebar: Black background, white text for high contrast */}
+          <div className="flex min-h-full flex-col items-start bg-gray-900 text-white w-64 md:w-72 shadow-2xl">
+            
+            {/* Logo/Title in Sidebar */}
+            <div className="p-4 border-b border-gray-700 w-full mb-2">
+                <h3 className="text-2xl font-bold tracking-tight">DASHBOARD</h3>
+                <p className="text-xs text-gray-400 capitalize">{userInfo} Access</p>
+            </div>
 
-              {
-                userInfo === 'user' && <div>
-                  <li>
-                    <Link to={'/dashboard/user/my-contests'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Contest">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                      <span className="is-drawer-close:hidden">My Contest</span>
-                    </Link >
-                  </li>
-                  
-                  <li>
-                    <Link to={'/dashboard/user/my-winnings'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Winnind Contests">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                      <span className="is-drawer-close:hidden">My Winning Contests</span>
-                    </Link >
-                  </li>
+            {/* Sidebar Menu */}
+            <ul className="menu w-full grow text-base space-y-1">
+              {sharedLinks}
+              
+              {/* Monochromatic separator */}
+              <div className="divider h-px bg-gray-700 mx-4 my-2"></div>
+              
+              {roleLinks()}
 
-                  <li>
-                    <Link to={'/dashboard/user/profile'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                      <span className="is-drawer-close:hidden">My Profile</span>
-                    </Link >
-                  </li>
-                </div>
-              }
+              {/* Monochromatic separator */}
+              <div className="divider h-px bg-gray-700 mx-4 my-2"></div>
 
-              {
-                userInfo === 'creator' && <div>
-                  <li>
-                    <Link to={'/dashboard/creator/add-contest'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Contest">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                      <span className="is-drawer-close:hidden">Add Contest</span>
-                    </Link >
-                  </li>
-                  <li>
-                    <Link
-                    to={'/dashboard/creator/my-contests'}
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Created Contest">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                      <span className="is-drawer-close:hidden">My Created Contest</span>
-                    </Link>
-                  </li>
-                </div>
-              }
-
-              {
-                userInfo === 'admin' && <div>
-                  <li>
-                    <Link to={'/dashboard/admin/manage-contests'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Contest">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                      <span className="is-drawer-close:hidden">Manage Contest</span>
-                    </Link >
-                  </li>
-                  <li>
-                    <Link to={'/dashboard/admin/manage-users'} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                      <span className="is-drawer-close:hidden">Manage Users</span>
-                    </Link >
-                  </li>
-                </div>
-              }
-
-              {/* List item */}
-              <li>
-                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
-                  {/* Settings icon */}
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                  <span className="is-drawer-close:hidden">Settings</span>
-                </button>
-              </li>
+              
             </ul>
           </div>
         </div>
       </div>
     </div>
-
   );
 };
 export default Dashboard;

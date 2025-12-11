@@ -80,12 +80,12 @@ const ContestDetails = () => {
       </p>
 
       {/* PARTICIPANTS */}
-      <p className="mt-2 text-gray-700">
+      <p className="mt-2 ">
         <strong>Participants:</strong> {contest.participants || 0}
       </p>
 
       {/* PRIZE */}
-      <p className="mt-2 text-gray-700">
+      <p className="mt-2 ">
         <strong>Prize Money:</strong> ${contest.prizeMoney}
       </p>
 
@@ -106,12 +106,12 @@ const ContestDetails = () => {
 
       {/* DESCRIPTION */}
       <h2 className="text-2xl font-semibold mt-6">Description</h2>
-      <p className="text-gray-700 mt-2 leading-6">{contest.description}</p>
+      <p className=" mt-2 leading-6">{contest.description}</p>
 
       {/* TASK INSTRUCTIONS */}
       <h2 className="text-2xl font-semibold mt-6">Task Instructions</h2>
-      <p className="text-gray-700 mt-2 whitespace-pre-line">
-        {contest.task}
+      <p className=" mt-2 whitespace-pre-line">
+        {contest.taskInstruction}
       </p>
 
       {/* REGISTER BUTTON */}

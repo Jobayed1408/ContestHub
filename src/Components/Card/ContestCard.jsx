@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const ContestCard = ({ contest }) => {
     // console.log('contest', contest)
   return (
-    <div className="rounded-xl shadow-md border hover:shadow-xl transition p-4 bg-white dark:bg-gray-900">
+    <div className="rounded-xl shadow-md border hover:shadow-xl transition p-4 ">
       <img
         src={contest.image}
         alt={contest.name}
@@ -12,7 +12,7 @@ const ContestCard = ({ contest }) => {
 
       <h2 className="text-xl font-bold mt-3">{contest.name}</h2>
 
-      <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+      <p className="text-sm  mt-1 line-clamp-2">
         {contest.description}
       </p>
 
@@ -27,7 +27,7 @@ const ContestCard = ({ contest }) => {
       </div>
 
       <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
-        <Link to={`/contest-details/${contest._id}`}>View Details</Link>
+        <Link to={`/contest/${contest._id}`}>View Details</Link>
       </button>
     </div>
   );

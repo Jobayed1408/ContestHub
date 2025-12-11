@@ -40,7 +40,7 @@ const ManageUsers = () => {
       <div className="overflow-x-auto">
         <table className="table w-full border">
           <thead className="bg-gray-100">
-            <tr>
+            <tr >
               <th>#</th>
               <th>Name</th>
               <th>Creator Email</th>
@@ -51,7 +51,7 @@ const ManageUsers = () => {
 
           <tbody>
             {users.map((u, index) => (
-              <tr key={u._id}>
+              <tr key={u._id} className="text-black">
                 <td>{index + 1}</td>
                 <td>{u.displayName}</td>
                 <td>{u.email}</td>

@@ -2,13 +2,13 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import SocialLogin from './SocialLogin ';
-import { useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 
 const Login = () => {
 
 
     const location = useLocation();
-    const  navigate = useNavigate(); 
+    const navigate = useNavigate();
     const { loginUser } = useAuth()
 
     const {
@@ -21,10 +21,10 @@ const Login = () => {
     const handleLogin = (data) => {
         console.log(data)
         loginUser(data.email, data.password)
-        .then(res => {
-            navigate(location?.state?.from || '/');
-        })
-        .catch(err=> console.log(err))
+            .then(res => {
+                navigate(location?.state?.from || '/');
+            })
+            .catch(err => console.log(err))
     }
 
 
@@ -71,11 +71,17 @@ const Login = () => {
                             </fieldset>
                         </form>
                         <SocialLogin></SocialLogin>
+                        <p className='text-center'>Don't have an account? <Link to={'/register'}
+                        
+                        className='text-blue-400 underline'
+                        >Sign Up</Link></p>
+                            
                     </div>
+                    
                 </div>
-                
+
             </div>
-            
+
         </div>
     );
 };

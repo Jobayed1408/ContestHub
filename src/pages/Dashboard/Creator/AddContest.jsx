@@ -1,8 +1,6 @@
-// AddContest.jsx
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react";
 import useAxios from "../../../hooks/useAxios";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
@@ -14,93 +12,166 @@ const AddContest = () => {
       deadline: null,
     },
   });
-  const axiosSecure = useAxios()
-  const navigate = useNavigate()
-  const { user } = useAuth()
+  const axiosSecure = useAxios();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const onSubmit = (data) => {
-    const creatorName = user.displayName
-    const creatorEmail = user.email
-    data.creatorName = creatorName
-    data.creatorEmail = creatorEmail
-    console.log('after saving parcel', data);
+    // Ensure numeric fields are correctly typed
+    data.price = Number(data.price);
+    data.prizeMoney = Number(data.prizeMoney);
+
+    const creatorName = user.displayName;
+    const creatorEmail = user.email;
+    data.creatorName = creatorName;
+    data.creatorEmail = creatorEmail;
+
+    // Check if deadline is a Date object and convert to ISO string if needed
+    if (data.deadline instanceof Date) {
+      data.deadline = data.deadline.toISOString();
+    }
+    
+    console.log('Contest Data for submission:', data);
+
     Swal.fire({
-      title: "Agree with the Cost?",
-      text: `Charged for this contest ${data.price} taka!`,
+      title: "Confirm Contest Creation",
+      text: `You will be charged the entry price of $${data.price} . Proceed to payment?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#333333", // Black confirmation button
+      cancelButtonColor: "#A3A3A3", // Gray cancel button
       confirmButtonText: "Confirm and Continue Payment!"
     }).then((result) => {
       if (result.isConfirmed) {
-
-
-        // save the parcel info to the database
+        // save the contest info to the database
         axiosSecure.post('/contest', data)
           .then(res => {
-            console.log('after saving parcel', res.data);
+            console.log('After saving contest', res.data);
             if (res.data.insertedId) {
-              navigate('/dashboard/creator/my-contests')
+              // Note: You might want to navigate to a payment page here, 
+              // but following your original code, we navigate to the contest list.
+              navigate('/dashboard/creator/my-contests'); 
               Swal.fire({
                 position: "top-end",
                 icon: "success",
-                title: "Parcel has created. Please Pay",
+                title: "Contest created! Please proceed to pay.",
                 showConfirmButton: false,
                 timer: 2500
               });
+              reset(); // Clear form after successful submission/navigation
+            } else if (res.data.message) {
+                 // Handle specific server errors if applicable
+                Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: res.data.message,
+                });
             }
           })
-
-
+          .catch(error => {
+              console.error("Contest creation failed:", error);
+              Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: "Failed to create contest. Please try again.",
+              });
+          });
       }
     });
-    // console.log("Contest Created:", contest);
-
-    // API POST HERE
-    // reset();
   };
 
+  // Common input styles for consistency
+  const inputStyle = "w-full border border-gray-300 p-3 rounded-lg bg-gray-50 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition duration-150 shadow-inner";
+  const labelStyle = "block text-sm font-medium text-gray-700 mb-1 mt-3";
+  const cardBodyStyle = "bg-white p-6 md:p-10 rounded-xl shadow-2xl border-t-4 border-gray-900";
+
+
   return (
-    <div className="flex flex-col items-center justify-center ">
-      <h3 className="text-xl  font-bold mb-4">Create New Contest</h3>
-      <div className="hero  ">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-full">
+      <h3 className="text-3xl font-extrabold text-gray-900 mb-8 text-center border-b-2 border-gray-300 pb-3">
+        Create New Contest
+      </h3>
+      <div className="flex justify-center">
 
-        <div className="card items-center justify-center w-full max-w-lg shrink-0 shadow-xl ">
-          <div className="card-body ">
-            <form onSubmit={handleSubmit(onSubmit)} >
-              <fieldset className="fieldset flex flex-col md:flex-row items-center justify-center" >
-                <div className="w-1/2">
-                  <label className="label">Name</label>
-                  <input {...register("name", { required: true })} placeholder="Contest Name" className="input" />
+        {/* Card Container */}
+        <div className="w-full max-w-4xl">
+          <div className={cardBodyStyle}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              
+              {/* === TWO COLUMN LAYOUT (Responsive) === */}
+              <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                
+                {/* === COLUMN 1: Basic Info === */}
+                <div>
+                  <label className={labelStyle}>Contest Name</label>
+                  <input 
+                    {...register("name", { required: true })} 
+                    placeholder="e.g., Summer Logo Challenge" 
+                    className={inputStyle} 
+                  />
 
-                  <label htmlFor="Name">Image</label>
-                  <input {...register("image", { required: true })} placeholder="Image URL" className="input" />
+                  <label className={labelStyle}>Image URL</label>
+                  <input 
+                    {...register("image", { required: true })} 
+                    placeholder="Contest Image Link" 
+                    className={inputStyle} 
+                  />
 
-                  <label htmlFor="Name">Description</label>
-                  <textarea {...register("description", { required: true })} placeholder="Description" className="input" />
-
-                  <label htmlFor="Name">Price</label>
-                  <input {...register("price", { required: true })} placeholder="Entry Price" type="number" className="input" />
+                  <label className={labelStyle}>Entry Price (Taka)</label>
+                  <input 
+                    {...register("price", { required: true, valueAsNumber: true })} 
+                    placeholder="e.g., 100" 
+                    type="number" 
+                    min="1"
+                    className={inputStyle} 
+                  />
+                  
+                  <label className={labelStyle}>Description</label>
+                  <textarea 
+                    {...register("description", { required: true })} 
+                    placeholder="Brief description of the contest..." 
+                    rows="4"
+                    className={`${inputStyle} resize-none`} 
+                  />
+                  
                 </div>
-                <div className="w-1/2">
-                  <label className="label">Prize Money</label>
-                  <input {...register("prizeMoney", { required: true })} placeholder="Prize Money" type="number" className="input" />
 
-                  <label className="label">Task Instruction</label>
-                  <textarea {...register("taskInstruction", { required: true })} placeholder="Task Instruction" className="input" />
+                {/* === COLUMN 2: Details & Deadline === */}
+                <div>
+                  <label className={labelStyle}>Prize Money (Taka)</label>
+                  <input 
+                    {...register("prizeMoney", { required: true, valueAsNumber: true })} 
+                    placeholder="e.g., 5000" 
+                    type="number" 
+                    min="1"
+                    className={inputStyle} 
+                  />
 
-                  <label className="label">Select Content Type</label>
-                  <select {...register("contestType", { required: true })} className="input">
-                    <option>Select Type</option>
-                    <option>Logo Design</option>
-                    <option>Writing</option>
-                    <option>Photography</option>
+                  <label className={labelStyle}>Contest Type</label>
+                  <select 
+                    {...register("contestType", { required: true })} 
+                    className={inputStyle}
+                  >
+                    <option value="">Select Category</option>
+                    <option value="Logo Design">Logo Design</option>
+                    <option value="Image Design">Image Design</option>
+                    <option value="Article Writing">Article Writing</option>
+                    <option value="Photography">Photography</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Programming">Others</option>
                   </select>
 
-                  <div>
-                    <label className="block mb-1">Deadline</label>
+                  <label className={labelStyle}>Task Instruction</label>
+                  <textarea 
+                    {...register("taskInstruction", { required: true })} 
+                    placeholder="Detailed instructions for participants..." 
+                    rows="4"
+                    className={`${inputStyle} resize-none`} 
+                  />
 
+                  <div className="mt-3">
+                    <label className={labelStyle}>Deadline</label>
                     <Controller
                       control={control}
                       name="deadline"
@@ -109,19 +180,26 @@ const AddContest = () => {
                         <DatePicker
                           selected={field.value}
                           onChange={(date) => field.onChange(date)}
-                          placeholderText="Select date"
-                          className="input"
+                          placeholderText="Select Date"
+                          dateFormat="MMMM d, yyyy"
+                          // Apply consistent styling to the DatePicker input
+                          className={inputStyle} 
+                          wrapperClassName="w-full"
                         />
                       )}
                     />
-
                   </div>
-
+                  
                 </div>
-
               </fieldset>
-              <div className="flex justify-center items-center">
-                <button className="bg-blue-500  text-white px-4 py-2 rounded">
+              
+              {/* === SUBMIT BUTTON === */}
+              <div className="mt-10 flex justify-center">
+                <button 
+                  type="submit" 
+                  // High contrast black button for primary action
+                  className="bg-gray-900 hover:bg-gray-700 text-white font-semibold py-3 px-10 rounded-lg transition duration-300 shadow-xl disabled:bg-gray-400"
+                >
                   Create Contest
                 </button>
               </div>

@@ -16,7 +16,6 @@ const AllContest = () => {
     },
   });
 
-  // console.log("Allcontest", contests)
   // Tabs list
   const tabs = ["All", "Image Design", "Article Writing", "Logo Design", "Marketing"];
 
@@ -37,10 +36,10 @@ const AllContest = () => {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-full border transition ${
+            className={`px-4 py-2 rounded-full border transition font-semibold ${
               activeTab === tab
                 ? "bg-blue-600 text-white"
-                : "bg-white dark:bg-gray-800"
+                : " text-blue-500"
             }`}
           >
             {tab}

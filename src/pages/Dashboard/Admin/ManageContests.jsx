@@ -12,7 +12,7 @@ const ManageContests = () => {
       return res.data; 
     },
   });
-  console.log('contests', contests)
+  
 
   const changeStatus = async(id, status) => {
     console.log(id, status)
@@ -43,7 +43,7 @@ const ManageContests = () => {
 
       <div className="overflow-x-auto">
         <table className="table w-full border">
-          <thead className="bg-gray-100">
+          <thead className="">
             <tr>
               <th>#</th>
               <th>Contest Name</th>
@@ -55,7 +55,7 @@ const ManageContests = () => {
 
           <tbody>
             {Array.isArray(contests) && contests.map((contest, index) => (
-              <tr key={contest._id}>
+              <tr key={contest._id} className="text-black">
                 <td>{index + 1}</td>
                 <td>{contest.name}</td>
                 <td>{contest.creatorEmail}</td>
