@@ -15,7 +15,7 @@ const Submissions = () => {
     const primaryButton = "bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md disabled:bg-gray-400";
     const winnerTagStyle = "inline-flex items-center bg-gray-900 text-white font-bold px-3 py-1 rounded-full shadow-lg text-sm tracking-wider";
 
-    // 1️⃣ Fetch submissions for this contest
+    // Fetch submissions for this contest
     const { data: submissions = [], isLoading } = useQuery({
         queryKey: ["submissions", contestId],
         queryFn: async () => {
@@ -26,12 +26,13 @@ const Submissions = () => {
     });
 
     console.log(submissions)
-    // 2️⃣ Mutation for declaring winner
+    // Mutation for declaring winner
     const declareWinnerMutation = useMutation({
         mutationFn: async (submissionId) => {
             const res = await axiosSecure.patch(`/contests/${contestId}/winner`, {
                 winnerId: submissionId,
             });
+            console.log('contestId',contestId,submissionId)
             return res.data;
         },
         onSuccess: () => {

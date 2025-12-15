@@ -15,7 +15,7 @@ const NavBar = () => {
 
     const logOut = () => {
         logout()
-            .then(data => console.log(data))
+            
     }
 
     return (

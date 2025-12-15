@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import ContestCard from "../../Components/Card/ContestCard";
+import Loader from "../../Components/Loader/Loader";
 
 const AllContest = () => {
   const axiosPublic = useAxios()
@@ -16,8 +17,10 @@ const AllContest = () => {
     },
   });
 
+  // <option value="">Select Category</option>
+
   // Tabs list
-  const tabs = ["All", "Image Design", "Article Writing", "Logo Design", "Marketing"];
+  const tabs = ["All", "Image Design", "Article Writing",'Photography', "Logo Design", 'Programming', "Marketing","Others"];
 
   // Filter by tab
   const filtered =
@@ -49,7 +52,9 @@ const AllContest = () => {
 
       {/* Loading State */}
       {isLoading && (
-        <p className="text-center text-lg">Loading contests...</p>
+        <div className="text-center text-lg">
+          <Loader />
+        </div>
       )}
 
       {/* Empty State */}

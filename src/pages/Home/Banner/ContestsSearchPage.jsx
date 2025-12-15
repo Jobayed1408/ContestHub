@@ -29,8 +29,8 @@ const ContestsSearchPage = () => {
           <div key={contest._id} className="p-4 border rounded shadow">
             <img src={contest.image} alt={contest.name} className="w-full h-40 object-cover rounded mb-2" />
             <h2 className="font-semibold text-lg">{contest.name}</h2>
-            <p className="text-sm text-gray-600">{contest.description.slice(0, 50)}...</p>
-            <p className="mt-1 text-indigo-600 font-bold">Participants: {contest.participants || 0}</p>
+            <p className="text-sm ">{contest.description.slice(0, 50)}...</p>
+            <p className="mt-1  font-bold">Participants: {contest.participants || 0}</p>
           </div>
         ))}
       </div>

@@ -1,8 +1,9 @@
 import React from 'react';
 import useAuth from '../hooks/useAuth';
 import useRole from '../hooks/useRole';
+import { Navigate } from 'react-router';
 
-const AdminRoute = ({ children }) => {
+const CreatorRoute = ({ children }) => {
     const { loading } = useAuth();
     const { role, roleLoading } = useRole()
 
@@ -10,11 +11,11 @@ const AdminRoute = ({ children }) => {
         return <Loader></Loader>
     }
 
-    if (role !== 'admin') {
+    if (role !== 'creator') {
         return <Navigate to="/login" replace />;
     }
 
     return children;
 };
 
-export default AdminRoute;
+export default CreatorRoute;

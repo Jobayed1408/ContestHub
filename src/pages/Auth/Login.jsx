@@ -21,7 +21,7 @@ const Login = () => {
     const handleLogin = (data) => {
         console.log(data)
         loginUser(data.email, data.password)
-            .then(res => {
+            .then(() => {
                 navigate(location?.state?.from || '/');
             })
             .catch(err => console.log(err))

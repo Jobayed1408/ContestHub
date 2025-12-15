@@ -29,6 +29,9 @@ import Payment from "../pages/Payment/Payment";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import PaymentCancelled from "../pages/Payment/PaymentCancelled";
 import ContestsSearchPage from "../pages/Home/Banner/ContestsSearchPage";
+import AdminRoute from "./AdminRoute";
+import CreatorRoute from "./CreatorRoute";
+// import AllContest from "../pages/Contesst/AllContest";
 
 
 export const router = createBrowserRouter([
@@ -48,15 +51,17 @@ export const router = createBrowserRouter([
       },
       {
         path: 'all-contests',
-        element: <AllContest></AllContest>,
+        element: <AllContest />
+        // element: <AllContest></AllContest>,
       },
       {
         path: 'contest/:id',
-        element: <PrivateRoute><ContestDetails></ContestDetails></PrivateRoute>
+        element: <PrivateRoute><ContestDetails/> </PrivateRoute>
+        // element: <PrivateRoute><ContestDetails></ContestDetails></PrivateRoute>
       },
-      { 
-        path: "/contests/search", 
-        element: <ContestsSearchPage /> 
+      {
+        path: "/contests/search",
+        element: <ContestsSearchPage />
       }
 
     ]
@@ -81,7 +86,9 @@ export const router = createBrowserRouter([
   // DashBoard
   {
     path: 'dashboard',
-    element: <DashboardLayout></DashboardLayout>,
+    element: <PrivateRoute>
+      <DashboardLayout></DashboardLayout>
+    </PrivateRoute> ,
     children: [
       {
         index: true,
@@ -104,7 +111,7 @@ export const router = createBrowserRouter([
       // User dashboard functionality 
       {
         path: 'user',
-        element: <PrivateRoute><User></User></PrivateRoute>,
+        element: <PrivateRoute> <User></User> </PrivateRoute>,
         children: [
           // { path: 'payment-success', element: },
           { path: "my-contests", element: <MyContests /> },
@@ -114,7 +121,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'creator',
-        element: <PrivateRoute><Creator /></PrivateRoute>,
+        element: <CreatorRoute>  <PrivateRoute> <Creator /> </PrivateRoute> </CreatorRoute> ,
         children: [
           { path: "add-contest", element: <AddContest /> },
           { path: "my-contests", element: <MyCreatedContests /> },
@@ -124,7 +131,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'admin',
-        element: <PrivateRoute> <Admin /> </PrivateRoute>,
+        element: <AdminRoute> <PrivateRoute> <Admin /> </PrivateRoute> </AdminRoute> ,
         children: [
           { path: "manage-users", element: <ManageUsers /> },
           { path: "manage-contests", element: <ManageContests /> },

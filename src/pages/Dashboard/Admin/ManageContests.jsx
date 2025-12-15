@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
 import { toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
 
 const ManageContests = () => {
   const axiosSecure = useAxios();
+  const {user} = useAuth()
 
   const { data: contests = [], refetch } = useQuery({
     queryKey: ["all-contests"],
@@ -11,12 +13,14 @@ const ManageContests = () => {
       const res = await axiosSecure.get("/contests");
       return res.data; 
     },
+    enabled: !!user?.email,
   });
   
 
   const changeStatus = async(id, status) => {
-    console.log(id, status)
+    // console.log(id, status)
     await axiosSecure.patch(`/contest/changeStatus/${id}`, {status});
+    refetch();
   }
 
   const handleConfirm = async (contest, status) => {
@@ -28,7 +32,6 @@ const ManageContests = () => {
   const handleReject = async (contest, status) => {
     changeStatus(contest._id, status);
     toast.info("Contest rejected");
-    refetch();
   };
 
   const handleDelete = async (id) => {

@@ -39,13 +39,14 @@ const MyProfile = () => {
       });
 
     },
+
+    
   });
 
-  // In MyProfile.jsx (or a new hook)
   const { data: tasks = [] } = useQuery({
     queryKey: ["tasks", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/tasks/${user.email}`);
+      const res = await axiosSecure.get(`/user-all-tasks/${user.email}`);
       return res.data || [];
     },
     enabled: !!user?.email,
@@ -54,7 +55,7 @@ const MyProfile = () => {
   // console.log('tasks', tasks)
 
 
-  // 👉 Update profile mutation
+  // Update profile mutation
   const mutation = useMutation({
     mutationFn: async (formData) => {
       const res = await axiosSecure.patch(`/users/${user.email}`, formData);
