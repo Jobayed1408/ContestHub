@@ -14,7 +14,7 @@ const Footer = () => {
 
 
   return (
-    <footer className="bg-linear-to-r from-gray-700 to-gray-900 pt-8 px-4 mt-20">
+    <footer className="bg-linear-to-r from-gray-700 to-gray-900 pb-5 pt-8 px-4 mt-20">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl ">
         <div className='flex flex-col items-center md:items-start'>
           <Link to={'/'} className="flex items-center space-x-2 text-xl font-bold text-primary ">

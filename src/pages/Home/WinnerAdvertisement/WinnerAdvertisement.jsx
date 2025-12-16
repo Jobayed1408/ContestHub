@@ -36,7 +36,7 @@ const WinnerAdvertisement = () => {
               ? "grid-cols-1 justify-items-center"
               : winners.length === 2
               ? "grid-cols-2 justify-items-center"
-              : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+              : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center"
           }`}
         >
           {winners.map((winner, idx) => (

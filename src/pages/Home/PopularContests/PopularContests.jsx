@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import useAxios from "../../../hooks/useAxios";
 import useAuth from "../../../hooks/useAuth";
+import Loader from "../../../Components/Loader/Loader";
 
 const PopularContests = () => {
     const axiosSecure = useAxios();
@@ -28,7 +29,7 @@ const PopularContests = () => {
         }
     };
 
-    if (isLoading) return <p className="text-center p-8">Loading popular contests...</p>;
+    if (isLoading) return <Loader />
 
     return (
         <section className="py-16 px-6 md:px-20">
