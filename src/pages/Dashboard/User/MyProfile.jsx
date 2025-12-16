@@ -98,7 +98,7 @@ const MyProfile = () => {
 
   const chartData = [
     { name: "Wins", value: totalWins },
-    { name: "Lost / Participated", value: totalLost },
+    { name: "Participated", value: totalLost },
   ];
 
   if (isLoading) return <p className="p-8 text-lg text-gray-600">Loading profile data...</p>;
