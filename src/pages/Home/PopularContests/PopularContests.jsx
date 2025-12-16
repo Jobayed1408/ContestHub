@@ -15,7 +15,7 @@ const PopularContests = () => {
     const { data: contests = [], isLoading } = useQuery({
         queryKey: ["popularContests"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/contests");
+            const res = await axiosSecure.get("/popular-contests");
             return res.data || [];
         },
     });
@@ -65,7 +65,7 @@ const PopularContests = () => {
                             </p>
                             <button
                                 onClick={() => handleDetails(contest._id)}
-                                className="bg-emerald-600 text-white py-2 px-4 rounded w-full hover:bg-emerald-700 transition"
+                                className="bg-emerald-600 text-white py-2 px-4 rounded w-full hover:bg-emerald-700 cursor-pointer transition"
                             >
                                 Details
                             </button>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useAxios from "../../../hooks/useAxios";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import { FaEdit, FaTrashAlt, FaEye, FaSpinner, FaClock } from "react-icons/fa";
+import { FaSpinner, FaClock } from "react-icons/fa";
 
 // 🚀 FIX: Convert the custom hook into a regular PURE FUNCTION
 const calculateRemainingTime = (deadline) => {
@@ -51,15 +51,9 @@ const MyContests = () => {
     });
     console.log(myContests)
 
-    // Placeholder function for handling delete 
-    const handleDelete = (id) => {
-        // This should be a useMutation hook in a real app
-        alert(`Delete action for contest ID: ${id}`);
-    };
-
-    // --- Styling Variables ---
+ 
     const tableHeaderClass = "text-sm font-semibold text-gray-900 uppercase tracking-wider bg-gray-200 border-b border-gray-300";
-    const tableRowClass = "hover:bg-gray-100 transition duration-150 border-b border-gray-200";
+    const tableRowClass = "hover:bg-gray-100 transition dration-150 border-b border-gray-200";
 
     if (isLoading) {
         return (

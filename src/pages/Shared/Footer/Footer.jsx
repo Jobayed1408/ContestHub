@@ -69,7 +69,7 @@ const Footer = () => {
               href="mailto:support@elearn.com"
               className="flex items-center text-gray-200 hover:text-blue-600"
             >
-              <Mail size={18} className="mr-2" /> support@elearn.com
+              <Mail size={18} className="mr-2" /> support@contest-hub.com
             </a>
           </div>
         </div>
@@ -78,7 +78,7 @@ const Footer = () => {
 
       <div className="border-t lg:mb-0 md:mb-0 mb-20 border-blue-700 mt-8 pt-4 text-center">
         <p className="text-sm text-gray-200">
-          © {currentYear} E-learning platform. All Rights Reserved.
+          © {currentYear} ContestHub. All Rights Reserved.
           <span className="ml-4">
             <Link to="/" className="hover:text-blue-600 mr-3">Privacy Policy</Link>
             <Link to="/" className="hover:text-blue-600">Terms of Service</Link>
