@@ -5,6 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router';
 import useAxios from '../../hooks/useAxios';
 import SocialLogin from './SocialLogin ';
+import toast from 'react-hot-toast';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -41,7 +42,7 @@ const Register = () => {
                         axiosSecure.post('/users', userInfo)
                             .then(res => {
                                 if (res.data.insertedId) {
-                                    console.log('user created in the database');
+                                    toast.success('Registered successfully');
                                 }
                             })
 
@@ -54,7 +55,7 @@ const Register = () => {
 
                         userProfileUpdate(userProfile)
                             .then(() => {
-                                // console.log('user profile updated done.')
+                                toast.success('Update profile successfully')
                                 navigate(location.state || '/');
                             })
                             .catch(error => console.log(error))
@@ -115,7 +116,7 @@ const Register = () => {
     
 
     return (
-        <div className="card bg-base-100 w-full mx-auto max-w-sm shrink-0 shadow-2xl">
+        <div className="card  w-full mx-auto max-w-sm shrink-0 shadow-2xl">
             <h3 className="text-3xl text-center">Welcome to Zap Shift</h3>
             <p className='text-center'>Please Register</p>
             <form className="card-body" onSubmit={handleSubmit(handleRegistration)}>
@@ -124,7 +125,7 @@ const Register = () => {
                     <label className="label">Name</label>
                     <input type="text"
                         {...register('name', { required: true })}
-                        className="input"
+                        className="input text-black"
                         placeholder="Your Name" />
                     {errors.name?.type === 'required' && <p className='text-red-500'>Name is required.</p>}
 
@@ -137,7 +138,7 @@ const Register = () => {
 
                     {/* email field */}
                     <label className="label">Email</label>
-                    <input type="email" {...register('email', { required: true })} className="input" placeholder="Email" />
+                    <input type="email" {...register('email', { required: true })} className="input text-black" placeholder="Email" />
                     {errors.email?.type === 'required' && <p className='text-red-500'>Email is required.</p>}
 
                     {/* password */}
@@ -146,7 +147,7 @@ const Register = () => {
                         required: true,
                         minLength: 6,
                         pattern: /^(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/
-                    })} className="input" placeholder="Password" />
+                    })} className="input text-black" placeholder="Password" />
                     {
                         errors.password?.type === 'required' && <p className='text-red-500'>Password is required.</p>
                     }
@@ -159,7 +160,6 @@ const Register = () => {
                         errors.password?.type === 'pattern' && <p className='text-red-500'>Password must have at least one uppercase, at least one lowercase, at least one number, and at least one special characters</p>
                     }
 
-                    <div><a className="link link-hover">Forgot password?</a></div>
                     <button className="btn btn-neutral mt-4">Register</button>
                 </fieldset>
             </form>

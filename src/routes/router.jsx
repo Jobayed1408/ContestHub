@@ -31,6 +31,8 @@ import PaymentCancelled from "../pages/Payment/PaymentCancelled";
 import ContestsSearchPage from "../pages/Home/Banner/ContestsSearchPage";
 import AdminRoute from "./AdminRoute";
 import CreatorRoute from "./CreatorRoute";
+import HowItWorks from "../Components/HowItWorks";
+import Profile from "../Components/Profile";
 // import AllContest from "../pages/Contesst/AllContest";
 
 
@@ -56,13 +58,23 @@ export const router = createBrowserRouter([
       },
       {
         path: 'contest/:id',
-        element: <PrivateRoute><ContestDetails/> </PrivateRoute>
+        element: <PrivateRoute><ContestDetails /> </PrivateRoute>
         // element: <PrivateRoute><ContestDetails></ContestDetails></PrivateRoute>
       },
       {
         path: "/contests/search",
         element: <ContestsSearchPage />
+      },
+      {
+        path: "/how-it-works",
+        element: <HowItWorks />
+      },
+      {
+        path: "/profile",
+        element: <PrivateRoute><Profile /></PrivateRoute>
       }
+
+
 
     ]
   },
@@ -88,7 +100,7 @@ export const router = createBrowserRouter([
     path: 'dashboard',
     element: <PrivateRoute>
       <DashboardLayout></DashboardLayout>
-    </PrivateRoute> ,
+    </PrivateRoute>,
     children: [
       {
         index: true,
@@ -121,7 +133,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'creator',
-        element: <CreatorRoute>  <PrivateRoute> <Creator /> </PrivateRoute> </CreatorRoute> ,
+        element: <CreatorRoute>  <PrivateRoute> <Creator /> </PrivateRoute> </CreatorRoute>,
         children: [
           { path: "add-contest", element: <AddContest /> },
           { path: "my-contests", element: <MyCreatedContests /> },
@@ -131,7 +143,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'admin',
-        element: <AdminRoute> <PrivateRoute> <Admin /> </PrivateRoute> </AdminRoute> ,
+        element: <AdminRoute> <PrivateRoute> <Admin /> </PrivateRoute> </AdminRoute>,
         children: [
           { path: "manage-users", element: <ManageUsers /> },
           { path: "manage-contests", element: <ManageContests /> },

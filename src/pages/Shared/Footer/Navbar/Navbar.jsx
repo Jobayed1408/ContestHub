@@ -9,17 +9,19 @@ import { BookA } from "lucide-react";
 import NavItem from "./NavItem";
 import { AuthContext } from "../../../../context/AuthContext";
 import ThemeToggle from "../../../../toggle/ThemeToggle";
+import { VscWorkspaceUnknown } from "react-icons/vsc";
+import { CgProfile } from "react-icons/cg";
 
 const NavBar = () => {
     const { user, logout } = use(AuthContext);
 
     const logOut = () => {
         logout()
-            
+
     }
 
     return (
-        <div className="navbar min-h-0 z-1 pb-10 pt-5 glass-card max-w-7xl mx-auto">
+        <div className="navbar min-h-0 z-1 py-3 glass-card max-w-7xl mx-auto">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
@@ -50,13 +52,23 @@ const NavBar = () => {
                             </NavItem>
                         </li>
                         <li>
-                            <NavItem to={"/f"}>
+                            <NavItem to={"/all-contests"}>
                                 <MdOutlineDensitySmall /> All Contents
                             </NavItem>
                         </li>
                         <li>
                             <NavItem to={"/dashboard"}>
                                 <LuLayoutDashboard /> DashBoard
+                            </NavItem>
+                        </li>
+                        <li>
+                            <NavItem to={"/how-it-works"}>
+                                <LuLayoutDashboard /> Participation Rules
+                            </NavItem>
+                        </li>
+                        <li>
+                            <NavItem to={"/profile"}>
+                                <CgProfile /> Profile
                             </NavItem>
                         </li>
                         {
@@ -77,19 +89,19 @@ const NavBar = () => {
                 <Link to={"/"} className="flex text-primary items-center gap-1 text-lg md:text-3xl font-bold">
                     <div className="hidden md:flex items-center">
                         <BookA className="" /> <h1 >
-                        ContestHub
+                            ContestHub
                         </h1>
                     </div>
 
                 </Link>
             </div>
-            <div className="navbar-center md:hidden items-center  flex font-bold text-primary text-2xl">
+            <Link className="navbar-center md:hidden items-center  flex font-bold text-primary text-2xl">
                 <BookA className="" />
                 <h1>ContestHub
                 </h1>
-            </div>
+            </Link>
             <div className="md:navbar-center hidden md:flex">
-                <ul className="menu menu-horizontal px-1 lg:gap-5  text-xl">
+                <ul className="menu menu-horizontal px-1 lg:gap-1  text-xl">
                     <li className="ext-primary">
                         <NavItem to={"/"}>
                             <GoHomeFill />
@@ -105,6 +117,16 @@ const NavBar = () => {
                     <li>
                         <NavItem to={"/dashboard"}>
                             <LuLayoutDashboard /> Dashboard
+                        </NavItem>
+                    </li>
+                    <li>
+                        <NavItem to={"/how-it-works"}>
+                            <VscWorkspaceUnknown /> Participation Rules
+                        </NavItem>
+                    </li>
+                    <li>
+                        <NavItem to={"/profile"}>
+                            <CgProfile /> Profile
                         </NavItem>
                     </li>
 
@@ -135,22 +157,8 @@ const NavBar = () => {
                                 <li className="text-xs">{user.email}</li>
                             </div>
 
-                            <li>
-                                <NavItem to={"/sd"}>
-                                    My Courses
-                                </NavItem>
-                            </li>
-
-                            <li >
-                                <NavItem to={"/d"}>
-                                    My Enrollment
-                                </NavItem>
-                            </li>
-
                             <ThemeToggle></ThemeToggle>
-
-
-
+                            
                             <li>
                                 <button
                                     onClick={logOut}

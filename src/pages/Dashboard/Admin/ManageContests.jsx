@@ -24,7 +24,7 @@ const ManageContests = () => {
     queryKey: ["contests", page],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/contests?page=${page}&limit=${5}`
+        `/contests?page=${page}&limit=${10}`
       );
       return res.data;
     },
@@ -35,7 +35,7 @@ const ManageContests = () => {
   const contests = data?.data || [];
   const total = data?.total || 0;
 
-  const totalPages = Math.ceil(total / 5);
+  const totalPages = Math.ceil(total / 10);
 
   if (isLoading) return <Loader></Loader>
 

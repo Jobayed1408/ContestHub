@@ -95,6 +95,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const PaymentSuccess = () => {
   const location = useLocation();
@@ -147,7 +148,7 @@ const PaymentSuccess = () => {
       const res = await axiosSecure.post("/submit-task", payload);
 
       if (res.data.success) {
-        alert("Task Submitted Successfully!");
+        toast.success("Task Submitted Successfully!");
         setTaskText("");
         setOpen(false);
       } else {

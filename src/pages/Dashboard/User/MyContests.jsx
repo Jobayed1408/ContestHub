@@ -49,8 +49,6 @@ const MyContests = () => {
         },
         enabled: !!user?.email,
     });
-    console.log(myContests)
-
  
     const tableHeaderClass = "text-sm font-semibold text-gray-900 uppercase tracking-wider bg-gray-200 border-b border-gray-300";
     const tableRowClass = "hover:bg-gray-100 transition dration-150 border-b border-gray-200";

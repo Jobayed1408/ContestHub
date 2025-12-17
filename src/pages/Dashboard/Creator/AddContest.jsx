@@ -31,7 +31,6 @@ const AddContest = () => {
       data.deadline = data.deadline.toISOString();
     }
     
-    console.log('Contest Data for submission:', data);
 
     Swal.fire({
       title: "Confirm Contest Creation",
