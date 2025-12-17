@@ -2,6 +2,7 @@ import React from 'react';
 import useAuth from '../../hooks/useAuth';
 import useAxios from '../../hooks/useAxios';
 import { useLocation, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 const SocialLogin = () => {
     const { signInWithGoogle } = useAuth();
@@ -24,8 +25,8 @@ const SocialLogin = () => {
                 }
 
                 axiosSecure.post('/users', userInfo)
-                    .then(res => {
-                        console.log('user data has been stored', res.data)
+                    .then(() => {
+                        toast.success("Login Successfully.")
                         navigate(location.state || '/');
                     })
 

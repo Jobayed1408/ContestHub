@@ -5,7 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router';
 import useAxios from '../../hooks/useAxios';
 import SocialLogin from './SocialLogin ';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -132,7 +132,7 @@ const Register = () => {
                     {/* photo image field */}
                     <label className="label">Photo</label>
 
-                    <input type="file" {...register('photo', { required: true })} className="file-input" placeholder="Your Photo" />
+                    <input type="file" {...register('photo', { required: true })} className="file-input text-black" placeholder="Your Photo" />
 
                     {errors.name?.type === 'required' && <p className='text-red-500'>Photo is required.</p>}
 

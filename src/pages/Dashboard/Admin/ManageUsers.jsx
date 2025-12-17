@@ -23,7 +23,7 @@ const ManageUsers = () => {
 
   const handleChangeRole = async (email, newRole) => {
     try {
-      console.log(email, newRole);
+      // console.log(email, newRole);
 
       await axiosSecure.patch(`/users/role/${email}`, { role: newRole });
       toast.success("Role updated");
@@ -35,7 +35,7 @@ const ManageUsers = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">Manage Users</h2>
+      <h2 className="text-xl text-gray-700 font-bold mb-4">Manage Users</h2>
 
       <div className="overflow-x-auto">
         <table className="table w-full border">
