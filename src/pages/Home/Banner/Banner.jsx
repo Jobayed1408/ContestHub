@@ -33,9 +33,9 @@ const Banner = () => {
         </p>
 
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="flex justify-center gap-2 md:gap-4">
-          <input
-            type="text"
+        <form onSubmit={handleSearch} className="flex justify-center gap-2 md:gap-4"> 
+          <input 
+            type="text" 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by contest type..."

@@ -74,7 +74,7 @@ const ContestDetails = () => {
 
     // Helper for countdown display card (unchanged)
     const TimeCard = ({ value, label }) => (
-        <div className="bg-gray-100 p-2 rounded-lg text-center shadow-inner min-w-[70px]">
+        <div className="bg-gray-100 p-2 rounded-lg text-center shadow-inner min-w-[40px]">
             <span className="text-xl md:text-2xl font-extrabold text-gray-900 block leading-none">
                 {String(Math.max(0, value)).padStart(2, '0')}
             </span>
@@ -84,8 +84,8 @@ const ContestDetails = () => {
 
     return (
         // Added overflow-hidden to the outer container as a safeguard
-        <div className="p-4 md:p-8 bg-gray-50 min-h-screen overflow-hidden"> 
-            <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden border-t-4 border-blue-600">
+        <div className="p-2 md:p-8  min-h-screen overflow-hidden"> 
+            <div className="max-w-6xl mx-auto rounded-2xl shadow-2xl overflow-hidden border-t-4 border-blue-600">
                 
                 {/* === MAIN CONTENT GRID === */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6 md:p-10">
@@ -98,7 +98,7 @@ const ContestDetails = () => {
                             className="w-full max-h-[450px] object-cover rounded-xl shadow-lg"
                         />
                         
-                        <h1 className="text-4xl font-extrabold text-gray-900 border-b pb-3">
+                        <h1 className="text-4xl font-extrabold border-b pb-3">
                             {contest.name}
                         </h1>
 
@@ -125,16 +125,16 @@ const ContestDetails = () => {
 
                         {/* DESCRIPTION */}
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-800 mt-6 mb-3 border-b-2 pb-1">Description</h2>
+                            <h2 className="text-2xl font-bold  mt-6 mb-3 border-b-2 pb-1">Description</h2>
                             {/* 💡 Improvement: Added break-words for long text strings */}
-                            <p className="text-gray-600 leading-relaxed whitespace-pre-line break-words"> 
+                            <p className=" leading-relaxed whitespace-pre-line break-words"> 
                                 {contest.description}
                             </p>
                         </div>
 
                         {/* TASK INSTRUCTIONS */}
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-800 mt-6 mb-3 border-b-2 pb-1">Task Instructions</h2>
+                            <h2 className="text-2xl font-bold  mt-6 mb-3 border-b-2 pb-1">Task Instructions</h2>
                             <div className="bg-gray-100 p-4 rounded-lg border border-gray-200">
                                 {/* 💡 Improvement: Added break-words for long text strings */}
                                 <p className="text-gray-700 whitespace-pre-line leading-relaxed break-words">

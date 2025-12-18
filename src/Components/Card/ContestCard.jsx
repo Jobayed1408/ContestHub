@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 const ContestCard = ({ contest }) => {
     // console.log('contest', contest)
   return (
-    <div className="rounded-xl shadow-md border hover:shadow-xl transition p-4 ">
+    <div className="rounded-xl shadow-md border border-blue-600 hover:shadow-xl transition p-2 ">
       <img
         src={contest.image}
         alt={contest.name}
-        className="w-full h-48 object-cover rounded-lg"
+        className="w-full h-48 object-fit rounded-lg"
       />
 
       <h2 className="text-xl font-bold mt-3">{contest.name}</h2>

@@ -104,7 +104,7 @@ const MyProfile = () => {
   if (isLoading) return <p className="p-8 text-lg text-gray-600">Loading profile data...</p>;
 
   return (
-    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+    <div className=" md:p-8 bg-gray-50 min-h-screen">
       <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-8 border-b-4 border-emerald-500 pb-2 inline-block">
         My Profile
       </h1>
@@ -161,7 +161,7 @@ const MyProfile = () => {
             <h3 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Performance Breakdown</h3>
 
             <div className="h-64 sm:h-80 md:h-96">
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" >
                 <PieChart>
                   <Pie
                     data={chartData}
@@ -186,7 +186,7 @@ const MyProfile = () => {
 
           {/* Update Profile Form Card */}
           <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <h3 className="text-xl font-semibold text-gray-700 mb-5 border-b pb-2">Update Profile Details</h3>
+            <h3 className="text-xl font-semibold text-gray-700 mb-5 border-b pb-2">Update Profile Data</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
               <div>

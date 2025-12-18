@@ -74,13 +74,7 @@ const NavBar = () => {
                         {
                             !user && (
                                 <li>
-                                    <div className="flex  ">
-                                        <p>  Theme</p>
-                                        <input
-
-                                            type="checkbox"
-                                            className="toggle" />
-                                    </div>
+                                    <ThemeToggle></ThemeToggle>
                                 </li>
                             )
                         }

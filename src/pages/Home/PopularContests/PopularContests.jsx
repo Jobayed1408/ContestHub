@@ -35,7 +35,7 @@ const PopularContests = () => {
     return (
         <section className="py-16 px-6 md:px-20">
             <div className="flex justify-between items-center mb-8">
-                <h2 className="text-3xl font-bold ">Popular Contests</h2>
+                <h2 className="text-xl md:text-3xl font-bold ">Popular Contests</h2>
                 <button
                     onClick={() => navigate("/all-contests")}
                     className="text-emerald-600 font-semibold hover:underline"
