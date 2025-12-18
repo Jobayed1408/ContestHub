@@ -45,7 +45,7 @@ const AddContest = () => {
         // save the contest info to the database
         axiosSecure.post('/contest', data)
           .then(res => {
-            console.log('After saving contest', res.data);
+            // console.log('After saving contest', res.data);
             if (res.data.insertedId) {
               // Note: You might want to navigate to a payment page here, 
               // but following your original code, we navigate to the contest list.
@@ -158,7 +158,7 @@ const AddContest = () => {
                     <option value="Photography">Photography</option>
                     <option value="Marketing">Marketing</option>
                     <option value="Programming">Programming</option>
-                    <option value="Programming">Others</option>
+                    <option value="Others">Others</option>
                   </select>
 
                   <label className={labelStyle}>Task Instruction</label>

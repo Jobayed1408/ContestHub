@@ -1,14 +1,15 @@
 import { useParams } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
-import useAuth from "../../../hooks/useAuth";
 import { FaTrophy, FaUserCircle } from "react-icons/fa"; // Added icons
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const Submissions = () => {
     const { contestId } = useParams();
     const axiosSecure = useAxios();
     const queryClient = useQueryClient();
+    
 
     // --- Styling Variables for Monochromatic Theme ---
     const primaryButton = "bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md disabled:bg-gray-400";
@@ -24,14 +25,13 @@ const Submissions = () => {
         enabled: !!contestId,
     });
 
-    console.log(submissions)
+    // console.log(submissions)
     // Mutation for declaring winner
     const declareWinnerMutation = useMutation({
         mutationFn: async (submissionId) => {
             const res = await axiosSecure.patch(`/contests/${contestId}/winner`, {
                 winnerId: submissionId,
             });
-            console.log('contestId',contestId,submissionId)
             return res.data;
         },
         onSuccess: () => {
@@ -44,10 +44,80 @@ const Submissions = () => {
     });
 
     const declareWinner = (id) => {
-        if (window.confirm("WARNING: Are you sure you want to declare this participant as the winner? This action is often irreversible.")) {
-            declareWinnerMutation.mutate(id);
-        }
+        Swal.fire({
+            title: "Declare Winner?",
+            text: "Are you sure you want to declare this participant winner?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6", // Primary Blue
+            cancelButtonColor: "#d33",    // Danger Red
+            confirmButtonText: "Yes, declare winner!",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Trigger the mutation instead of a delete request
+                declareWinnerMutation.mutate(id, {
+                    onSuccess: () => {
+                        // Feedback after the server successfully updates
+                        Swal.fire({
+                            title: "Success!",
+                            text: "The winner has been officially declared.",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    onError: (error) => {
+                        // Feedback if something goes wrong (e.g., 403 Forbidden)
+                        Swal.fire({
+                            title: "Error",
+                            text: error?.response?.data?.message || "Something went wrong.",
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        });
     };
+
+    // const declareWinner = (id) => {
+    //     Swal.fire({
+    //           title: "Winner of this Contest?",
+    //           text: `Are you sure?`,
+    //           icon: "warning",
+    //           showCancelButton: true,
+    //           confirmButtonColor: "#3085d6",
+    //           cancelButtonColor: "#d33",
+    //           confirmButtonText: "Continue to declare winner..!"
+    //         }).then((result) => {
+    //           if (result.isConfirmed) {
+        
+        
+    //             // save the contests info to the database
+    //             axiosSecure.delete(`/contest/${id}`)
+    //               .then(res => {
+    //                 queryClient.invalidateQueries(["allContests"]);
+    //                 console.log("Updated:", res.data);
+        
+    //                 Swal.fire({
+    //                   position: "top-end",
+    //                   icon: "success",
+    //                   title: "Contest deleted!",
+    //                   showConfirmButton: false,
+    //                   timer: 2000
+    //                 });
+        
+        
+    //               })
+    //               .catch(err => {
+    //                 console.error(err);
+    //               });
+    //           }
+    //         })
+    //     if (window.confirm("WARNING: Are you sure you want to declare this participant as the winner? This action is often irreversible.")) {
+    //         declareWinnerMutation.mutate(id);
+    //     }
+    // };
 
     if (isLoading) return <p className="p-8 text-lg text-gray-600">Loading submissions and checking for winners...</p>;
 

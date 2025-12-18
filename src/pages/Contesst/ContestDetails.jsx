@@ -22,7 +22,6 @@ const ContestDetails = () => {
             return res.data;
         }
     });
-    console.log("Data", contest);
 
     // Memoize the deadline value
     const deadlineTime = useMemo(() => {

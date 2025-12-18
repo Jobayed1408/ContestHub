@@ -53,8 +53,8 @@ const Banner = () => {
       {/* Optional Banner Image / Decoration */}
       <motion.img
         src="https://images.unsplash.com/photo-1605902711622-cfb43c4431f4?auto=format&fit=crop&w=800&q=80"
-        alt="Creative Banner"
-        className="absolute right-0 bottom-0 w-1/3 opacity-20 md:opacity-40 hidden md:block"
+        alt="Banner"
+        className="absolute right-0 bottom-0 w-1/3 opacity-10 md:opacity-20 hidden md:block"
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 0.4 }}
         transition={{ duration: 1.2 }}

@@ -20,10 +20,7 @@ const MyCreatedContests = () => {
     enabled: !!user?.email
   });
 
-  console.log('contests', contests);
-
   const handleDelete = async (id) => {
-    console.log("Delete contest:", id);
 
     Swal.fire({
       title: "Delete Contest?",
@@ -56,8 +53,6 @@ const MyCreatedContests = () => {
           .catch(err => {
             console.error(err);
           });
-
-
       }
     })
     // TODO: call DELETE API
