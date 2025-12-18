@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import useAuth from './useAuth';
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: 'https://contest-hub-server-steel.vercel.app'
 })
 
 const useAxios = () => {
@@ -44,11 +44,10 @@ const useAxios = () => {
                     });
                 }
 
-                return Promise.reject(error); // Reject the promise so the component can handle the error
+                return Promise.reject(error);
             }
         );
 
-        // Cleanup: Eject interceptors when the component unmounts
         return () => {
             axiosSecure.interceptors.request.eject(requestInterceptor);
             

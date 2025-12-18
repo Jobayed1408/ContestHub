@@ -180,11 +180,3 @@ client/
  │   ├── hooks/
  │   ├── context/
  │   ├── routes/
- │   └── utils/
-
-server/
- ├── routes/
- ├── middleware/
- ├── controllers/
- ├── config/
- └── index.js
