@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
 import Loader from "../../Components/Loader/Loader";
+import { toast } from "react-toastify";
 
 const Payment = () => {
     const { contestId } = useParams();
@@ -35,7 +36,7 @@ const Payment = () => {
         });
     
         if (check.data.alreadyPaid) {
-            alert("You already registered for this contest!");
+            toast.error("You already registered for this contest!");
             return;
         }
 

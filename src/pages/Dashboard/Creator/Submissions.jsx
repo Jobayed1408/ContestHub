@@ -1,15 +1,14 @@
 import { useParams } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast"; // assuming this works
 import useAxios from "../../../hooks/useAxios";
 import useAuth from "../../../hooks/useAuth";
 import { FaTrophy, FaUserCircle } from "react-icons/fa"; // Added icons
+import { toast } from "react-toastify";
 
 const Submissions = () => {
     const { contestId } = useParams();
     const axiosSecure = useAxios();
     const queryClient = useQueryClient();
-    const { user } = useAuth(); // Creator's info
 
     // --- Styling Variables for Monochromatic Theme ---
     const primaryButton = "bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md disabled:bg-gray-400";

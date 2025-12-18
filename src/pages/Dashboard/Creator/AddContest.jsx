@@ -37,8 +37,8 @@ const AddContest = () => {
       text: `You will be charged the entry price of $${data.price} . Proceed to payment?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#333333", // Black confirmation button
-      cancelButtonColor: "#A3A3A3", // Gray cancel button
+      confirmButtonColor: "#333333", 
+      cancelButtonColor: "#A3A3A3", 
       confirmButtonText: "Confirm and Continue Payment!"
     }).then((result) => {
       if (result.isConfirmed) {

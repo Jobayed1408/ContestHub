@@ -22,6 +22,7 @@ const ContestDetails = () => {
             return res.data;
         }
     });
+    console.log("Data", contest);
 
     // Memoize the deadline value
     const deadlineTime = useMemo(() => {
@@ -217,6 +218,7 @@ const ContestDetails = () => {
                                 </div>
                                 <span className="text-xl font-bold text-gray-900">{contest.participants || 0}</span>
                             </div>
+                            
                         </div>
 
                     </div>
