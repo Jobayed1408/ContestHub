@@ -68,51 +68,6 @@ const Register = () => {
                 console.log(error)
             })
     }
-    // const handleRegistration = async (data) => {
-    //     try {
-    //         // 1. Upload profile image if provided
-    //         let photoURL = "";
-    //         if (data.photo && data.photo.length > 0) {
-    //             const IMG_API_KEY = import.meta.env.VITE_image_url;
-    //             const IMG_UPLOAD_URL = `https://api.imgbb.com/1/upload?key=${IMG_API_KEY}`;
-                
-    //             const formData = new FormData();
-    //             formData.append("image", data.photo[0]);
-    
-    //             const imgRes = await axios.post(IMG_UPLOAD_URL, formData);
-    //             photoURL = imgRes.data.data.url;
-    //         }
-    
-    //         // 2. Register user with Firebase
-    //         const result = await registerUser(data.email, data.password);
-    //         const user = result.user;
-    
-    //         // 3. Update Firebase profile
-    //         const updateProfileData = {
-    //             displayName: data.name,
-    //             photoURL: photoURL || "", // fallback if no photo
-    //         };
-    
-    //         await updateUserProfile(updateProfileData);
-    
-    //         // 4. Prepare user object for backend
-    //         const userInfo = {
-    //             email: user.email,
-    //             displayName: data.name,
-    //             photoURL: photoURL || "",
-    //         };
-    
-    //         // 5. Save user to your backend
-    //         const res = await axiosSecure.post("/users", userInfo);
-    //         console.log("User stored in DB:", res.data);
-    
-    //         // 6. Navigate after success
-    //         navigate(location.state?.from || "/");
-    
-    //     } catch (error) {
-    //         console.error("Registration error:", error);
-    //     }
-    // };
     
 
     return (

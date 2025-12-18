@@ -15,12 +15,11 @@ const EditContest = () => {
     const { user } = useAuth();
     const queryClient = useQueryClient();
 
-    // 1. Fetch Existing Contest Data
+
     const { data: contestData = {}, isLoading, isError: fetchError } = useQuery({
         queryKey: ["contest", contestId],
         queryFn: async () => {
             const res = await axiosSecure.get(`/contest/single/${contestId}`);
-            // Return only the contest object
             return res.data;
         },
         enabled: !!contestId,
@@ -28,26 +27,18 @@ const EditContest = () => {
 
     // 2. Form Setup (React Hook Form)
     const { register, handleSubmit, control, reset } = useForm({
-        // Set the default values for the CREATOR fields DIRECTLY from the user object.
-        // These fields will be read-only.
+       
         defaultValues: {
             creatorName: user?.displayName || '',
             creatorEmail: user?.email || '',
         }
     });
 
-    // 3. Populate EDITABLE Form Fields on Data Load
     useEffect(() => {
-        // Only run reset if data is loaded and we have a valid contest ID
         if (!isLoading && contestData && contestData._id) {
 
-            // Convert deadline string to Date object for DatePicker Controller
             const deadlineDate = contestData.deadline ? new Date(contestData.deadline) : null;
 
-            // We use reset() here to populate the fields fetched from the database.
-            // Note: We deliberately SKIP creatorName and creatorEmail fields in this reset
-            // because they were already set by defaultValues from the current logged-in user 
-            // and should not be changed by the database data if they differ (though they shouldn't).
             reset({
                 name: contestData.name,
                 image: contestData.image,
@@ -56,8 +47,7 @@ const EditContest = () => {
                 prizeMoney: contestData.prizeMoney,
                 taskInstruction: contestData.taskInstruction,
                 contestType: contestData.contestType,
-                deadline: deadlineDate, // Date object for the Controller
-                // Keep Creator Name/Email from defaultValues/user object
+                deadline: deadlineDate, 
             });
         }
     }, [isLoading, contestData, reset]);

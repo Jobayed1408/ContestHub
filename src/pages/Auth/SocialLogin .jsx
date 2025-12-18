@@ -14,10 +14,8 @@ const SocialLogin = () => {
     const handleGoogleSignIn = () => {
         signInWithGoogle()
             .then(result => {
-                console.log(result.user);
 
 
-                // create user in the database
                 const userInfo = {
                     email: result.user.email,
                     displayName: result.user.displayName,

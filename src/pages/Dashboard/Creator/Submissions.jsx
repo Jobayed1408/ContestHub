@@ -11,11 +11,9 @@ const Submissions = () => {
     const queryClient = useQueryClient();
     
 
-    // --- Styling Variables for Monochromatic Theme ---
     const primaryButton = "bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md disabled:bg-gray-400";
     const winnerTagStyle = "inline-flex items-center bg-gray-900 text-white font-bold px-3 py-1 rounded-full shadow-lg text-sm tracking-wider";
 
-    // Fetch submissions for this contest
     const { data: submissions = [], isLoading } = useQuery({
         queryKey: ["submissions", contestId],
         queryFn: async () => {
@@ -25,8 +23,6 @@ const Submissions = () => {
         enabled: !!contestId,
     });
 
-    // console.log(submissions)
-    // Mutation for declaring winner
     const declareWinnerMutation = useMutation({
         mutationFn: async (submissionId) => {
             const res = await axiosSecure.patch(`/contests/${contestId}/winner`, {
@@ -49,16 +45,16 @@ const Submissions = () => {
             text: "Are you sure you want to declare this participant winner?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6", // Primary Blue
-            cancelButtonColor: "#d33",    // Danger Red
+            confirmButtonColor: "#3085d6", 
+            cancelButtonColor: "#d33",    
             confirmButtonText: "Yes, declare winner!",
             cancelButtonText: "Cancel"
         }).then((result) => {
             if (result.isConfirmed) {
-                // Trigger the mutation instead of a delete request
+
                 declareWinnerMutation.mutate(id, {
                     onSuccess: () => {
-                        // Feedback after the server successfully updates
+
                         Swal.fire({
                             title: "Success!",
                             text: "The winner has been officially declared.",
@@ -68,7 +64,6 @@ const Submissions = () => {
                         });
                     },
                     onError: (error) => {
-                        // Feedback if something goes wrong (e.g., 403 Forbidden)
                         Swal.fire({
                             title: "Error",
                             text: error?.response?.data?.message || "Something went wrong.",
@@ -80,44 +75,7 @@ const Submissions = () => {
         });
     };
 
-    // const declareWinner = (id) => {
-    //     Swal.fire({
-    //           title: "Winner of this Contest?",
-    //           text: `Are you sure?`,
-    //           icon: "warning",
-    //           showCancelButton: true,
-    //           confirmButtonColor: "#3085d6",
-    //           cancelButtonColor: "#d33",
-    //           confirmButtonText: "Continue to declare winner..!"
-    //         }).then((result) => {
-    //           if (result.isConfirmed) {
-        
-        
-    //             // save the contests info to the database
-    //             axiosSecure.delete(`/contest/${id}`)
-    //               .then(res => {
-    //                 queryClient.invalidateQueries(["allContests"]);
-    //                 console.log("Updated:", res.data);
-        
-    //                 Swal.fire({
-    //                   position: "top-end",
-    //                   icon: "success",
-    //                   title: "Contest deleted!",
-    //                   showConfirmButton: false,
-    //                   timer: 2000
-    //                 });
-        
-        
-    //               })
-    //               .catch(err => {
-    //                 console.error(err);
-    //               });
-    //           }
-    //         })
-    //     if (window.confirm("WARNING: Are you sure you want to declare this participant as the winner? This action is often irreversible.")) {
-    //         declareWinnerMutation.mutate(id);
-    //     }
-    // };
+ 
 
     if (isLoading) return <p className="p-8 text-lg text-gray-600">Loading submissions and checking for winners...</p>;
 
@@ -134,8 +92,7 @@ const Submissions = () => {
             <div className="space-y-6">
                 {submissions.map((s, index) => (
                     <div
-                        key={s.contestIdid || index} // Assuming _id is available, otherwise use index
-                        // Conditional styling for the winner using strong border
+                        key={s.contestIdid || index} 
                         className={`p-6 bg-white rounded-xl shadow-lg transition duration-200 border-l-8 ${
                             s.isWinner 
                                 ? "border-gray-900 shadow-2xl" 
@@ -146,7 +103,6 @@ const Submissions = () => {
                             <div className="flex items-center space-x-3">
                                 <FaUserCircle className="size-6 text-gray-700" />
                                 <h4 className="text-xl font-bold text-gray-800">
-                                    {/* FIX: Display participant's name if available, otherwise email */}
                                     {s.participantName || s.participantEmail}
                                 </h4>
                             </div>
@@ -175,7 +131,7 @@ const Submissions = () => {
                                 {/* Action Button */}
                                 {!s.isWinner && (
                                     <button
-                                        onClick={() => declareWinner(s._id)} // Assuming the submission ID is s._id
+                                        onClick={() => declareWinner(s._id)} 
                                         className={primaryButton}
                                         disabled={declareWinnerMutation.isLoading}
                                     >

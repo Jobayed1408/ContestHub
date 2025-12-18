@@ -8,9 +8,6 @@ import { AiOutlineIdcard, AiOutlineMenuUnfold } from "react-icons/ai";
 import { BsReverseLayoutTextWindowReverse } from "react-icons/bs";
 import { ImProfile } from "react-icons/im";
 
-// NOTE: Assuming your project is using Tailwind CSS,
-// and 'drawer' classes are from DaisyUI or a custom framework you are using.
-// We primarily update the 'bg-' and 'text-' colors to be monochromatic.
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -26,12 +23,10 @@ const Dashboard = () => {
         })
         .catch(error => {
             console.error("Error fetching user role:", error);
-            // Optional: Handle error state
         });
     }
   }, [user, axiosPublic]);
 
-  // Define Nav links based on user role
   const sharedLinks = (
     <>
       <li>
@@ -109,15 +104,12 @@ const Dashboard = () => {
   };
 
   return (
-    // Use an off-white background for the entire page content
     <div className="bg-gray-50 min-h-screen">
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
         
-        {/* === MAIN CONTENT AREA === */}
         <div className="drawer-content flex flex-col">
           
-          {/* Navbar: High contrast header with shadow */}
           <nav className="navbar w-full bg-white text-gray-900 border-b border-gray-200 shadow-md p-4">
             <div className="flex-none lg:hidden">
               <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost text-gray-800">
@@ -131,21 +123,20 @@ const Dashboard = () => {
             </div>
           </nav>
 
-          {/* Page Content: The main content container */}
           <div className="p-4 md:p-8 flex-grow">
             <h2 className="text-xl font-medium text-gray-600 mb-4 capitalize">Welcome, {user?.displayName || userInfo}</h2>
-            {/* The Outlet for nested routes like MyProfile.jsx */}
+
             <DashboardHome /> 
           </div>
         </div>
 
-        {/* === SIDEBAR (Drawer) === */}
+
         <div className="drawer-side z-20">
           <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-          {/* Sidebar: Black background, white text for high contrast */}
+
           <div className="flex min-h-full flex-col items-start bg-gray-900 text-white w-64 md:w-72 shadow-2xl">
             
-            {/* Logo/Title in Sidebar */}
+
             <div className="p-4 border-b border-gray-700 w-full mb-2">
                 <h3 className="text-2xl font-bold tracking-tight">DASHBOARD</h3>
                 <p className="text-xs text-gray-400 capitalize">{userInfo} Access</p>

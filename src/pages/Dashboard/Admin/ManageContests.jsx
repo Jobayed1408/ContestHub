@@ -11,15 +11,6 @@ const ManageContests = () => {
   const { user } = useAuth()
   const [page, setPage] = useState(1);
 
-  // const { data: contests = [], refetch } = useQuery({
-  //   queryKey: ["all-contests"],
-  //   queryFn: async () => {
-  //     const res = await axiosSecure.get("/contests");
-  //     return res.data;
-  //   },
-  //   enabled: !!user?.email,
-  // });
-
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["contests", page],
     queryFn: async () => {

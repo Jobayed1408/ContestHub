@@ -6,8 +6,8 @@ import useAxios from "../../../hooks/useAxios";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import useAuth from "../../../hooks/useAuth";
 
-// Updated COLORS for a more modern, eye-catching palette
-const COLORS = ["#10B981", "#EF4444"]; // Emerald (Win) / Red (Loss)
+
+const COLORS = ["#10B981", "#EF4444"]; 
 const MyProfile = () => {
   const axiosSecure = useAxios()
   const { user, userProfileUpdate } = useAuth();
@@ -21,7 +21,6 @@ const MyProfile = () => {
     },
   });
 
-  // 👉 Load profile + autofill using onSuccess (NO infinite loop)
   const { data: profile = {}, isLoading } = useQuery({
     queryKey: ["profile", user?.email],
     queryFn: async () => {
@@ -30,7 +29,6 @@ const MyProfile = () => {
     },
     enabled: !!user?.email,
 
-    // 🔥 SAFE autofill here
     onSuccess: (data) => {
       reset({
         displayName: data.displayName || user?.displayName || "",
@@ -52,10 +50,7 @@ const MyProfile = () => {
     enabled: !!user?.email,
   });
 
-  // console.log('tasks', tasks)
-
-
-  // Update profile mutation
+ 
   const mutation = useMutation({
     mutationFn: async (formData) => {
       const res = await axiosSecure.patch(`/users/${user.email}`, formData);
@@ -153,10 +148,8 @@ const MyProfile = () => {
 
         </div>
 
-        {/* Chart & Form (Col 2/3) */}
         <div className="lg:col-span-2 space-y-8">
 
-          {/* Win Percentage Chart Card (Responsive with ResponsiveContainer) */}
           <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
             <h3 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Performance Breakdown</h3>
 
@@ -184,7 +177,6 @@ const MyProfile = () => {
             </div>
           </div>
 
-          {/* Update Profile Form Card */}
           <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
             <h3 className="text-xl font-semibold text-gray-700 mb-5 border-b pb-2">Update Profile Data</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">

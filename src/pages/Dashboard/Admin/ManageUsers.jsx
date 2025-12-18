@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
 
 const ManageUsers = () => {
 
-  const navigate = useNavigate()
   const axiosSecure = useAxios()
 
 
@@ -17,7 +15,7 @@ const ManageUsers = () => {
       const res = await axiosSecure.get("/users");
       return res.data;
     },
-    refetchOnMount: true,       // ✅ always fetch fresh data when component mounts
+    refetchOnMount: true,       
     refetchOnWindowFocus: false
   });
 

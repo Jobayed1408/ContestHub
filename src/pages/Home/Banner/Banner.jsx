@@ -11,7 +11,6 @@ const Banner = () => {
     e.preventDefault();
     const trimmed = search.trim();
     if (trimmed) {
-      // Navigate to your search page with query param
       navigate(`/contests/search?type=${encodeURIComponent(trimmed)}`);
     }
   };

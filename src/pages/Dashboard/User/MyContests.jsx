@@ -5,7 +5,6 @@ import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { FaSpinner, FaClock } from "react-icons/fa";
 
-// 🚀 FIX: Convert the custom hook into a regular PURE FUNCTION
 const calculateRemainingTime = (deadline) => {
     if (!deadline) return "N/A";
 
@@ -20,7 +19,7 @@ const calculateRemainingTime = (deadline) => {
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-    // Simplified display
+    
     if (days > 0) {
         return `${days}d ${hours}h`;
     } else if (hours > 0) {
@@ -34,12 +33,10 @@ const MyContests = () => {
     const axiosSecure = useAxios();
     const { user } = useAuth();
 
-    // 1. Fetch contests using TanStack Query
     const {
         data: myContests = [],
         isLoading,
         isError,
-        // refetch // Kept for reference, not used here
     } = useQuery({
         queryKey: ["myContests", user?.email],
         queryFn: async () => {
@@ -137,32 +134,7 @@ const MyContests = () => {
                                         </span>
                                     </td>
 
-                                    {/* Action Buttons */}
-                                    {/* <td className="text-center p-4 space-x-2">
-                                        <Link to={`/dashboard/creator/edit/${contest._id}`}>
-                                            <button 
-                                                title="Edit Contest" 
-                                                className="text-gray-700 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100 transition"
-                                            >
-                                                <FaEdit className="size-4" />
-                                            </button>
-                                        </Link>
-                                        <Link to={`/dashboard/creator/submissions/${contest._id}`}>
-                                            <button 
-                                                title="View Submissions" 
-                                                className="text-gray-700 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100 transition"
-                                            >
-                                                <FaEye className="size-4" />
-                                            </button>
-                                        </Link>
-                                        <button 
-                                            onClick={() => handleDelete(contest._id)} 
-                                            title="Delete Contest"
-                                            className="text-red-600 hover:text-red-800 p-2 rounded-full hover:bg-red-50 transition"
-                                        >
-                                            <FaTrashAlt className="size-4" />
-                                        </button>
-                                    </td> */}
+                                
                                 </tr>
                             );
                         })}

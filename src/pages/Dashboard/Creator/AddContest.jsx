@@ -135,7 +135,7 @@ const AddContest = () => {
                   
                 </div>
 
-                {/* === COLUMN 2: Details & Deadline === */}
+
                 <div>
                   <label className={labelStyle}>Prize Money (Taka)</label>
                   <input 

@@ -22,13 +22,13 @@ const PopularContests = () => {
     });
 
 
-    const handleDetails = (id) => {
-        if (!user) {
-            navigate("/login");
-        } else {
-            navigate(`/contest/${id}`);
-        }
-    };
+    // const handleDetails = (id) => {
+    //     if (!user) {
+    //         navigate("/login");
+    //     } else {
+    //         navigate(`/contest/${id}`);
+    //     }
+    // };
 
     if (isLoading) return <Loader />
 

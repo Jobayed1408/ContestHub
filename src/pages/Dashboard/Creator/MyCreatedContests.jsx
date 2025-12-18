@@ -6,10 +6,9 @@ import useAuth from "../../../hooks/useAuth";
 import Loader from "../../../Components/Loader/Loader";
 
 const MyCreatedContests = () => {
-  const { user } = useAuth();  // <-- FIXED
+  const { user } = useAuth(); 
   const axiosPublic = useAxios();
   const queryClient = useQueryClient();
-  // console.log("User data",user?.email)
 
   const { data: contests = [], isLoading } = useQuery({
     queryKey: ["my-contests", user?.email],
@@ -34,7 +33,6 @@ const MyCreatedContests = () => {
       if (result.isConfirmed) {
 
 
-        // save the contests info to the database
         axiosPublic.delete(`/contest/${id}`)
           .then(res => {
             queryClient.invalidateQueries(["allContests"]);
@@ -55,7 +53,6 @@ const MyCreatedContests = () => {
           });
       }
     })
-    // TODO: call DELETE API
 
   };
 
