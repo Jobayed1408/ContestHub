@@ -6,8 +6,8 @@ It is designed to test and demonstrate skills in **React, Node.js/Express, Mongo
 ---
 
 ## 🚀 Live Links
-- **Client:** https://your-client-link.com  
-- **Server:** https://your-server-link.com  
+- **Client:** https://contesthub-mernstack.netlify.app/
+- **Server:** https://github.com/Jobayed1408/contestHub-server
 
 ---
 
