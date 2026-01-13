@@ -99,8 +99,8 @@ const MyProfile = () => {
   if (isLoading) return <p className="p-8 text-lg text-gray-600">Loading profile data...</p>;
 
   return (
-    <div className=" md:p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-8 border-b-4 border-emerald-500 pb-2 inline-block">
+    <div className=" md:p-8  min-h-screen">
+      <h1 className="text-3xl md:text-4xl font-extrabold mb-8 border-b-4 border-emerald-500 pb-2 inline-block">
         My Profile
       </h1>
 
@@ -109,7 +109,7 @@ const MyProfile = () => {
         <div className="lg:col-span-1 space-y-8">
 
           {/* Basic Info Card */}
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+          <div className=" p-6 rounded-xl shadow-lg border ">
             <div className="flex flex-col items-center text-center">
               <img
                 src={profile.photoURL || user?.photoURL}
@@ -117,27 +117,27 @@ const MyProfile = () => {
                 alt="Profile Avatar"
               />
 
-              <h2 className="text-2xl font-bold text-gray-800 break-words">
+              <h2 className="text-2xl font-bold break-words">
                 {profile.displayName || user?.displayName || "N/A"}
               </h2>
 
-              <p className="text-sm text-gray-500 mt-1">{user?.email}</p>
+              <p className="text-sm mt-1">{user?.email}</p>
             </div>
           </div>
 
           {/* Stats Summary Card */}
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <h3 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Statistics</h3>
+          <div className="p-6 rounded-xl shadow-lg border border-gray-100">
+            <h3 className="text-xl font-semibold mb-4 border-b pb-2">Statistics</h3>
             <div className="space-y-3">
-              <p className="flex justify-between text-gray-600">
+              <p className="flex justify-between ">
                 <span className="font-medium">Total Participated:</span>
                 <span className="font-bold text-lg text-indigo-600">{totalParticipated}</span>
               </p>
-              <p className="flex justify-between text-gray-600">
+              <p className="flex justify-between ">
                 <span className="font-medium">Total Wins:</span>
                 <span className="font-bold text-lg text-emerald-600">{totalWins}</span>
               </p>
-              <p className="flex justify-between text-gray-600">
+              <p className="flex justify-between ">
                 <span className="font-medium">Win Rate:</span>
                 <span className={`font-bold text-xl ${winRate >= 50 ? 'text-emerald-700' : 'text-amber-600'}`}>
                   {winRate}%
@@ -150,8 +150,8 @@ const MyProfile = () => {
 
         <div className="lg:col-span-2 space-y-8">
 
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <h3 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Performance Breakdown</h3>
+          <div className=" p-6 rounded-xl shadow-lg border ">
+            <h3 className="text-xl font-semibold mb-4 border-b pb-2">Performance Breakdown</h3>
 
             <div className="h-64 sm:h-80 md:h-96">
               <ResponsiveContainer width="100%" >
@@ -177,12 +177,12 @@ const MyProfile = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <h3 className="text-xl font-semibold text-gray-700 mb-5 border-b pb-2">Update Profile Data</h3>
+          <div className="p-6 rounded-xl shadow-lg border ">
+            <h3 className="text-xl font-semibold mb-5 border-b pb-2">Update Profile Data</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <label htmlFor="name" className="block text-sm font-medium mb-1">Full Name</label>
                 <input
                   {...register("displayName")}
                   id="name"
@@ -193,7 +193,7 @@ const MyProfile = () => {
               </div>
 
               <div>
-                <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-1">Photo URL</label>
+                <label htmlFor="photo" className="block text-sm font-medium mb-1">Photo URL</label>
                 <input
                   {...register("photoURL")}
                   id="photo"
@@ -203,7 +203,7 @@ const MyProfile = () => {
               </div>
 
               <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">Address / Bio</label>
+                <label htmlFor="address" className="block text-sm font-medium  mb-1">Address / Bio</label>
                 <textarea
                   {...register("address")}
                   id="address"
@@ -215,7 +215,7 @@ const MyProfile = () => {
 
               <button
                 type="submit"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-lg w-full transition duration-300 ease-in-out shadow-md disabled:bg-gray-400"
+                className="bg-emerald-600 hover:bg-emerald-700 font-semibold py-3 px-6 rounded-lg w-full transition duration-300 ease-in-out shadow-md disabled:bg-gray-400"
                 disabled={mutation.isLoading}
               >
                 {mutation.isLoading ? (

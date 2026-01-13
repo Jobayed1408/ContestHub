@@ -63,10 +63,10 @@ const MyCreatedContests = () => {
     <div className="p-6 ">
       { isLoading && <Loader/> }
       { !isLoading && contests.length === 0 && <p className="text-black">No contests found.</p> }
-      <h2 className="text-2xl text-gray-600 font-semibold mb-4">My Created Contests</h2>
+      <h2 className="text-2xl  font-semibold mb-4">My Created Contests</h2>
 
       <table className="w-full border border-gray-300 rounded-lg overflow-hidden">
-        <thead className="bg-gray-500">
+        <thead className="">
           <tr>
             <th className="p-3 text-left">Name</th>
             <th className="p-3 text-left">Status</th>
@@ -77,7 +77,7 @@ const MyCreatedContests = () => {
 
         <tbody>
           {Array.isArray(contests) && contests.map((contest) => (
-            <tr key={contest._id} className="border-b hover:bg-gray-50 text-black">
+            <tr key={contest._id} className="border-b  ">
               <td className="p-3">{contest.name}</td>
               <td className="p-3 capitalize">{contest.status}</td>
               <td className="p-3 capitalize">{contest.trackingId}</td>

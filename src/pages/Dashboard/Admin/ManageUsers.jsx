@@ -33,11 +33,11 @@ const ManageUsers = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-xl text-gray-700 font-bold mb-4">Manage Users</h2>
+      <h2 className="text-xl font-bold mb-4">Manage Users</h2>
 
       <div className="overflow-x-auto">
         <table className="table w-full border">
-          <thead className="bg-gray-100">
+          <thead className="text-primary">
             <tr >
               <th>#</th>
               <th>Name</th>
@@ -49,7 +49,7 @@ const ManageUsers = () => {
 
           <tbody>
             {users.map((u, index) => (
-              <tr key={u._id} className="text-black">
+              <tr key={u._id} className="">
                 <td>{index + 1}</td>
                 <td>{u.displayName}</td>
                 <td>{u.email}</td>

@@ -47,12 +47,12 @@ const MyContests = () => {
         enabled: !!user?.email,
     });
  
-    const tableHeaderClass = "text-sm font-semibold text-gray-900 uppercase tracking-wider bg-gray-200 border-b border-gray-300";
-    const tableRowClass = "hover:bg-gray-100 transition dration-150 border-b border-gray-200";
+    const tableHeaderClass = "text-sm font-semibold  uppercase tracking-wider  border-b border-gray-300";
+    const tableRowClass = "transition dration-150 border-b border-gray-200";
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center h-40 text-gray-700">
+            <div className="flex justify-center items-center h-40 ">
                 <FaSpinner className="animate-spin size-6 mr-3" />
                 Loading your created contests...
             </div>
@@ -65,10 +65,10 @@ const MyContests = () => {
 
     if (myContests.length === 0) {
         return (
-            <div className="p-8 text-center bg-white rounded-xl shadow-lg mt-6">
-                <h3 className="text-xl font-semibold text-gray-700">No Contests Created</h3>
-                <p className="text-gray-500 mt-2">Start your journey by adding a new contest!</p>
-                <Link to="/dashboard/creator/add-contest" className="mt-4 inline-block text-gray-900 underline hover:no-underline">
+            <div className="p-8 text-center  rounded-xl shadow-lg mt-6">
+                <h3 className="text-xl font-semibold ">No Contests Created</h3>
+                <p className="mt-2">Start your journey by adding a new contest!</p>
+                <Link to="/dashboard/creator/add-contest" className="mt-4 inline-block  underline hover:no-underline">
                     Go to Add Contest Page
                 </Link>
             </div>
@@ -77,9 +77,9 @@ const MyContests = () => {
 
     return (
         <div className="p-2 md:p-0">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">My Created Contests ({myContests.length})</h2>
+            <h2 className="text-2xl font-bold  mb-6">My Created Contests ({myContests.length})</h2>
 
-            <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
+            <div className="overflow-x-auto rounded-xl shadow-lg">
                 <table className="min-w-full table-auto border-collapse">
                     <thead>
                         <tr>
@@ -99,13 +99,13 @@ const MyContests = () => {
                             return (
                                 <tr key={contest._id} className={tableRowClass}>
                                     {/* # */}
-                                    <td className="p-4 text-gray-600 font-medium">{index + 1}</td>
+                                    <td className="p-4  font-medium">{index + 1}</td>
 
                                     {/* Contest Name + Creator */}
                                     <td className="p-4">
                                         <div className="flex items-center gap-3">
                                             <div>
-                                                <div className="text-sm font-bold text-gray-600">
+                                                <div className="text-sm font-bold ">
                                                     {contest.contestName}
                                                 </div>
                                             </div>
@@ -114,13 +114,13 @@ const MyContests = () => {
 
                                     {/* Participants Count */}
                                     <td className="text-center p-4">
-                                        <span className="font-bold text-lg text-gray-700">{contest.participants || 0}</span>
+                                        <span className="font-bold text-lg ">{contest.participants || 0}</span>
 
                                     </td>
 
                                     {/* Remaining Time */}
-                                    <td className="text-center p-4 font-semibold text-gray-700">
-                                        <FaClock className="inline size-4 mr-1 text-gray-700" />
+                                    <td className="text-center p-4 font-semibold ">
+                                        <FaClock className="inline size-4 mr-1 " />
                                         {remainingTime}
                                     </td>
 

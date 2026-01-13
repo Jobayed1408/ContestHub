@@ -10,10 +10,11 @@ const Banner = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     const trimmed = search.trim();
-    if (trimmed) {
-      navigate(`/contests/search?type=${encodeURIComponent(trimmed)}`);
-    }
+    if (!trimmed) return;
+
+    navigate(`/contests/search?query=${encodeURIComponent(trimmed)}`);
   };
+
 
   return (
     <motion.div
@@ -32,9 +33,9 @@ const Banner = () => {
         </p>
 
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="flex justify-center gap-2 md:gap-4"> 
-          <input 
-            type="text" 
+        <form onSubmit={handleSearch} className="flex justify-center gap-2 md:gap-4">
+          <input
+            type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by contest type..."

@@ -1,13 +1,11 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home/Home";
-import CoverageArea from "../pages/Map/CoverageArea";
 import Register from "../pages/Auth/Register";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Auth/Login";
 import ErrorPage from "../Components/ErrorPage";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
-import Dashboard from '../pages/Dashboard/Dashboard'
 import User from "../pages/Dashboard/User/USer";
 import Creator from "../pages/Dashboard/Creator/Creator";
 import Admin from "../pages/Dashboard/Admin/Admin";
@@ -22,7 +20,7 @@ import Submissions from "../pages/Dashboard/Creator/Submissions";
 import EditContest from "../pages/Dashboard/Creator/EditContest";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import ManageContests from "../pages/Dashboard/Admin/ManageContests";
-import ConfirmContest from "../pages/Dashboard/Admin/ConfirmContest";
+// import ConfirmContest from "../pages/Dashboard/Admin/ConfirmContest";
 import AllContest from "../pages/Contesst/AllContest";
 import ContestDetails from "../pages/Contesst/ContestDetails";
 import Payment from "../pages/Payment/Payment";
@@ -33,6 +31,11 @@ import AdminRoute from "./AdminRoute";
 import CreatorRoute from "./CreatorRoute";
 import HowItWorks from "../Components/HowItWorks";
 import Profile from "../Components/Profile";
+import AllWinners from "../pages/Dashboard/Admin/AllWinners";
+import About from "../pages/Extra/About";
+import Contact from "../pages/Extra/Contact";
+import PrivacyPolicy from "../pages/Extra/PrivacyPolicy";
+import DashHomeLayout from "../pages/Dashboard/dashHomeLayout";
 // import AllContest from "../pages/Contesst/AllContest";
 
 
@@ -46,19 +49,14 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
-      {
-        path: 'coverage',
-        element: <PrivateRoute><CoverageArea></CoverageArea></PrivateRoute>,
-        loader: () => fetch('/data/warehouses.json').then(res => res.json())
-      },
+      
       {
         path: 'all-contests',
         element: <AllContest />
-        // element: <AllContest></AllContest>,
       },
       {
         path: 'contest/:id',
-        element: <PrivateRoute><ContestDetails /> </PrivateRoute>
+        element: <ContestDetails /> 
         // element: <PrivateRoute><ContestDetails></ContestDetails></PrivateRoute>
       },
       {
@@ -71,8 +69,21 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <PrivateRoute><Profile /></PrivateRoute>
-      }
+        element: <Profile />
+      },
+      {
+        path: "/about",
+        element: <About />
+      },
+      {
+        path: "/contact",
+        element: <Contact />
+      },
+      {
+        path: "/privacyPolicy",
+        element: <PrivacyPolicy />
+      },
+     
 
 
 
@@ -98,13 +109,18 @@ export const router = createBrowserRouter([
   // DashBoard
   {
     path: 'dashboard',
-    element: <PrivateRoute>
-      <DashboardLayout></DashboardLayout>
-    </PrivateRoute>,
+    element: <DashboardLayout></DashboardLayout>,
+    // Component: <DashboardLayout></DashboardLayout>,
+    
     children: [
       {
         index: true,
-        Component: DashboardHome,
+        Component: DashHomeLayout,
+      },
+
+      {
+        path: 'home',
+        Component: DashHomeLayout,
       },
 
       {
@@ -147,7 +163,8 @@ export const router = createBrowserRouter([
         children: [
           { path: "manage-users", element: <ManageUsers /> },
           { path: "manage-contests", element: <ManageContests /> },
-          { path: "confirm-contests", element: <ConfirmContest /> },
+          { path: "all-winners", element: <AllWinners /> },
+          // { path: "confirm-contests", element: <ConfirmContest /> },
         ]
       },
 

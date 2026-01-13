@@ -56,11 +56,11 @@ const ManageContests = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-xl text-gray-700 font-bold mb-4">Manage Contests</h2>
+      <h2 className="text-xl  font-bold mb-4">Manage Contests</h2>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto ">
         <table className="table w-full border">
-          <thead className="">
+          <thead className="text-primary">
             <tr>
               <th>#</th>
               <th>Contest Name</th>
@@ -72,7 +72,7 @@ const ManageContests = () => {
 
           <tbody>
             {contests.map((contest, index) => (
-              <tr key={contest._id} className="text-black">
+              <tr key={contest._id} className="">
                 <td>{(page - 1) * 10 + index + 1}</td>
                 <td>{contest.name}</td>
                 <td>{contest.creatorEmail}</td>

@@ -86,8 +86,8 @@ const AddContest = () => {
 
 
   return (
-    <div className="p-4 md:p-8 bg-gray-50 min-h-full">
-      <h3 className="text-3xl font-extrabold text-gray-900 mb-8 text-center border-b-2 border-gray-300 pb-3">
+    <div className="p-4 md:p-8  min-h-full">
+      <h3 className="text-3xl font-extrabold  mb-8 text-center border-b-2 border-gray-300 pb-3">
         Create New Contest
       </h3>
       <div className="flex justify-center">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { motion, AnimatePresence } from "framer-motion";
 import useAxios from "../../../hooks/useAxios";
 import useAuth from "../../../hooks/useAuth";
 import Confetti from "react-confetti";
@@ -19,52 +20,96 @@ const MyWinningContests = () => {
     refetchInterval: 30000,
   });
 
-  // Show confetti if user has winning contests
   useEffect(() => {
     if (winningContests.length > 0) {
       setShowConfetti(true);
-      const timer = setTimeout(() => setShowConfetti(false), 5000); // show for 5 seconds
+      const timer = setTimeout(() => setShowConfetti(false), 5000);
       return () => clearTimeout(timer);
     }
   }, [winningContests]);
 
-  if (isLoading) return <p className="p-8 text-center text-lg text-gray-600">Loading your winning contests...</p>;
-  if (error) return <p className="p-8 text-center text-lg text-red-500">Error loading data.</p>;
+  if (isLoading) return (
+    <div className="flex justify-center items-center min-h-[400px]">
+      <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  );
+
+  if (error) return (
+    <div className="p-8 text-center border border-error/20 rounded-2xl bg-error/5 text-error">
+      Error loading winning contests. Please try again later.
+    </div>
+  );
 
   return (
-    <div className="p-4 md:p-8 min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+    <div className="p-4 md:p-8 min-h-screen bg-transparent">
+      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} />}
 
-      <h3 className="text-3xl font-extrabold mb-6 text-center text-emerald-600">
-        🎉 Winning Contests 🎉
-      </h3>
+      <header className="mb-10 text-center">
+        <motion.h3 
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="text-4xl font-black tracking-tight"
+        >
+          🏆 My <span className="text-primary italic">Victories</span>
+        </motion.h3>
+        <p className="text-base-content/60 mt-2">A record of your champion moments</p>
+      </header>
 
       {winningContests.length === 0 ? (
-        <p className="text-center text-gray-500 text-lg">You haven't won any contests yet. Keep participating!</p>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-20 border-2 border-dashed border-base-300 rounded-[2rem]"
+        >
+          <div className="text-5xl mb-4">🎖️</div>
+          <p className="text-lg ">You haven't won a contest yet. Your time is coming!</p>
+          <button className="btn btn-primary btn-outline rounded-full mt-6">Explore Contests</button>
+        </motion.div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {winningContests.map((contest) => (
-            <div
-              key={contest._id}
-              className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 transform hover:scale-105 transition-transform duration-300"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="text-xl font-bold text-gray-800">{contest.taskText}</h4>
-                <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-semibold">
-                  WINNER
-                </span>
-              </div>
-              <p className="text-gray-600 mb-2">
-                Contest ID: <span className="font-medium">{contest.contestId}</span>
-              </p>
-              <p className="text-gray-600 mb-4">
-                Submitted At: <span className="font-medium">{new Date(contest.submittedAt).toLocaleString()}</span>
-              </p>
-              <div className="bg-emerald-50 text-emerald-700 px-3 py-2 rounded-lg font-semibold text-center">
-                Congratulations! 🏆
-              </div>
-            </div>
-          ))}
+          <AnimatePresence>
+            {winningContests.map((contest, index) => (
+              <motion.div
+                key={contest._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="group relative rounded-3xl border border-base-300  p-6 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 overflow-hidden"
+              >
+                {/* Decorative background element */}
+                <div className="absolute -top-4 -right-4 w-16 h-16  rounded-full blur-2xl group-hover:bg-primary/20 transition-all"></div>
+
+                <div className="flex items-start justify-between mb-6">
+                  <div className="w-12 h-12 rounded-2xl  flex items-center justify-center text-2xl">
+                    🏆
+                  </div>
+                  <span className="badge badge-primary font-bold px-4 py-3 rounded-full text-xs">
+                    WINNER
+                  </span>
+                </div>
+
+                <h4 className="text-xl font-black  mb-4 line-clamp-1">
+                  {contest.taskText}
+                </h4>
+
+                <div className="space-y-3 text-sm border-t border-base-300 pt-4 mb-6">
+                  <div className="flex justify-between">
+                    <span className="opacity-80">Contest ID</span>
+                    <span className="font-mono font-medium">{contest.contestId.slice(-8)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="opacity-80">Date Won</span>
+                    <span className="font-medium">{new Date(contest.submittedAt).toLocaleDateString()}</span>
+                  </div>
+                </div>
+
+                <div className="bg-primary/5 text-primary p-3 rounded-2xl font-bold text-center text-sm border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all">
+                  Wait for Claim Reward →
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       )}
     </div>
